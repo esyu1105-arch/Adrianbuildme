@@ -42,8 +42,11 @@
                     <p class="text-xs text-indigo-200">Manessa & Adrian 婚禮 (2026.05.24)</p>
                 </div>
             </div>
-            <div class="bg-indigo-900/60 px-2.5 py-1 rounded-full text-xs font-semibold border border-indigo-500/30">
-                交通組長 & 物流
+            <div class="flex flex-col items-end">
+                <span class="bg-indigo-900/60 px-2.5 py-1 rounded-full text-xs font-semibold border border-indigo-500/30">
+                    交通組長 & 物流
+                </span>
+                <span id="sync-status" class="text-[9px] text-indigo-300 mt-1"><i class="fa-solid fa-cloud"></i> 雲端同步中</span>
             </div>
         </div>
     </header>
@@ -113,7 +116,7 @@
                 <!-- Task Card 1 -->
                 <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-1" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
@@ -135,7 +138,7 @@
                 <!-- Task Card 2 -->
                 <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-2" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800">「醫肚團隊」午餐安排</span>
@@ -149,7 +152,7 @@
                 <!-- Task Card 3 -->
                 <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-3" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800">Zone A (嫲嫲屋) 清理裝飾</span>
@@ -163,7 +166,7 @@
                 <!-- Task Card 4 -->
                 <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-4" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
@@ -191,7 +194,7 @@
                 <!-- Task Card 5 -->
                 <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-5" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800">全員抵達 M+ 搬運物資</span>
@@ -207,7 +210,7 @@
                 <!-- Task Card 6 -->
                 <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-6" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800">證婚位置 Set-up</span>
@@ -224,7 +227,7 @@
                 <!-- Task Card 7 -->
                 <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-7" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800">Reception Standby 迎賓</span>
@@ -238,7 +241,7 @@
                 <!-- Task Card 8 -->
                 <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-8" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800">高難度物流：搬運布藝 Backdrop</span>
@@ -263,7 +266,7 @@
                 <!-- Task Card 9 -->
                 <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-9" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800">晚宴迎賓 Reception Standby</span>
@@ -279,7 +282,7 @@
                 <!-- Task Card 10 -->
                 <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-10" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800">支援女家簽到</span>
@@ -293,7 +296,7 @@
                 <!-- Task Card 11 -->
                 <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-11" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800">接待處運作</span>
@@ -307,7 +310,7 @@
                 <!-- Task Card 12 -->
                 <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-12" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800">入口物資執拾、鎖入新娘房</span>
@@ -321,7 +324,7 @@
                 <!-- Task Card 13 -->
                 <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-13" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800">敬酒環節 Standby</span>
@@ -335,7 +338,7 @@
                 <!-- Task Card 14 -->
                 <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-14" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
@@ -352,7 +355,7 @@
                 <!-- Task Card 15 -->
                 <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-15" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800">送客分流與引導</span>
@@ -366,7 +369,7 @@
                 <!-- Task Card 16 -->
                 <div class="task-card border-2 border-rose-200 bg-rose-50/50 rounded-xl p-3.5 shadow-sm transition-all relative overflow-hidden" onclick="toggleTask(this)">
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-rose-600 focus:ring-rose-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-16" class="task-checkbox mt-1 w-4 h-4 rounded text-rose-600 focus:ring-rose-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-rose-900 flex items-center gap-1.5">
@@ -386,7 +389,7 @@
                 <!-- Task Card 17 -->
                 <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-17" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800">終極撤退：物資上花車</span>
@@ -419,15 +422,134 @@
 
     </main>
 
-    <!-- Interactive Logic -->
-    <script>
-        function toggleTask(card) {
-            const checkbox = card.querySelector('.task-checkbox');
-            checkbox.checked = !checkbox.checked;
-            updateProgress();
+    <!-- Firebase Integration & Interactive Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Firebase Configuration (Automatically injected by preview environment or fallback to local mock config)
+        const firebaseConfig = typeof __firebase_config !== 'undefined' 
+            ? JSON.parse(__firebase_config) 
+            : {
+                apiKey: "",
+                authDomain: "wedding-timeline-fallback.firebaseapp.com",
+                projectId: "wedding-timeline-fallback",
+                storageBucket: "wedding-timeline-fallback.appspot.com",
+                messagingSenderId: "123456789",
+                appId: "1:123456789:web:123456789"
+            };
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+        // Initialize Firebase services
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+        let isSyncing = false; // Flag to prevent write loops during sync reads
+
+        // Authentication Setup (RULE 3 - Auth Before Queries)
+        const initAuth = async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (error) {
+                console.error("Authentication failed:", error);
+                showSyncStatus('error', '同步失敗 (無權限)');
+            }
+        };
+
+        initAuth();
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            if (user) {
+                showSyncStatus('syncing', '已連線，讀取數據中...');
+                setupFirestoreListener();
+            } else {
+                showSyncStatus('offline', '離線 (未登入)');
+            }
+        });
+
+        // Setup Firestore Listener (RULE 1 - Strict Path & RULE 2 - No complex queries)
+        function setupFirestoreListener() {
+            if (!currentUser) return;
+            // Public path for the project: /artifacts/{appId}/public/data/{collectionName}/{documentId}
+            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'progress', 'brother');
+
+            onSnapshot(docRef, (docSnap) => {
+                isSyncing = true;
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    const checkedTasks = data.checkedTasks || {};
+                    
+                    const checkboxes = document.querySelectorAll('.task-checkbox');
+                    checkboxes.forEach(cb => {
+                        cb.checked = !!checkedTasks[cb.id];
+                    });
+                    
+                    showSyncStatus('success', '數據與雲端實時同步');
+                } else {
+                    showSyncStatus('success', '雲端暫無舊存檔，隨時可儲存');
+                }
+                updateProgressUI();
+                isSyncing = false;
+            }, (error) => {
+                console.error("Firestore loading error:", error);
+                showSyncStatus('error', '雲端連線異常');
+                updateProgressUI();
+                isSyncing = false;
+            });
         }
 
-        function updateProgress() {
+        // Save states back to Firestore on click
+        async function saveProgressToFirestore() {
+            if (!currentUser || isSyncing) return;
+            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'progress', 'brother');
+
+            const checkedTasks = {};
+            document.querySelectorAll('.task-checkbox').forEach(cb => {
+                if (cb.checked) {
+                    checkedTasks[cb.id] = true;
+                }
+            });
+
+            showSyncStatus('saving', '正同步至雲端...');
+
+            try {
+                await setDoc(docRef, { checkedTasks }, { merge: true });
+                showSyncStatus('success', '數據已安全保存至雲端');
+            } catch (error) {
+                console.error("Firestore saving error:", error);
+                showSyncStatus('error', '存檔失敗，請確認網絡');
+            }
+        }
+
+        // Global UI Sync status indicator
+        function showSyncStatus(type, message) {
+            const statusEl = document.getElementById('sync-status');
+            if (!statusEl) return;
+            
+            let icon = '<i class="fa-solid fa-cloud"></i>';
+            if (type === 'syncing' || type === 'saving') {
+                icon = '<i class="fa-solid fa-cloud-arrow-up animate-pulse text-indigo-300"></i>';
+            } else if (type === 'success') {
+                icon = '<i class="fa-solid fa-cloud-check text-emerald-400"></i>';
+            } else if (type === 'error') {
+                icon = '<i class="fa-solid fa-cloud-exclamation text-rose-400"></i>';
+            } else if (type === 'offline') {
+                icon = '<i class="fa-solid fa-cloud-slash text-slate-400"></i>';
+            }
+            statusEl.innerHTML = `${icon} <span class="ml-1">${message}</span>`;
+        }
+
+        // Local State Updater
+        function updateProgressUI() {
             const checkboxes = document.querySelectorAll('.task-checkbox');
             const total = checkboxes.length;
             let completed = 0;
@@ -453,7 +575,19 @@
             document.getElementById('progress-bar').style.width = `${percent}%`;
         }
 
-        function filterPhase(phaseId) {
+        // Core UI Actions bounded to window scope for inline HTML onclick attributes
+        window.toggleTask = function(card) {
+            const checkbox = card.querySelector('.task-checkbox');
+            checkbox.checked = !checkbox.checked;
+            updateProgress();
+        };
+
+        window.updateProgress = function() {
+            updateProgressUI();
+            saveProgressToFirestore();
+        };
+
+        window.filterPhase = function(phaseId) {
             // Update Tab active styling
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('bg-indigo-600', 'text-white', 'active');
@@ -472,11 +606,12 @@
                     group.style.display = 'none';
                 }
             });
-        }
+        };
 
-        window.onload = function() {
-            updateProgress();
-        }
+        // Bootstrap on DOM Load
+        window.addEventListener('DOMContentLoaded', () => {
+            updateProgressUI();
+        });
     </script>
 </body>
 </html>
