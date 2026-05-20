@@ -15,6 +15,7 @@
     <style>
         body {
             font-family: 'Inter', 'Noto Sans TC', sans-serif;
+            background-color: #f8fafc; /* bg-slate-50 */
         }
         .custom-scrollbar::-webkit-scrollbar {
             height: 4px;
@@ -26,579 +27,520 @@
             background: #cbd5e1;
             border-radius: 2px;
         }
+        /* Active task pulse effect */
+        .task-active {
+            border-color: #6366f1 !important; /* indigo-500 */
+            background-color: #eef2ff !important; /* indigo-50 */
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+            transition: all 0.3s ease;
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen pb-12">
+<body class="text-slate-800 min-h-screen pb-12">
 
     <!-- Header Section -->
-    <header class="bg-gradient-to-r from-indigo-800 to-indigo-950 text-white sticky top-0 z-50 shadow-md">
+    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-50 shadow-sm border-b border-slate-200">
         <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="bg-white/20 p-2 rounded-full">
-                    <i class="fa-solid fa-bus text-indigo-200 text-xl"></i>
+                <div class="bg-indigo-100 p-2 rounded-xl text-indigo-600 border border-indigo-200">
+                    <i class="fa-solid fa-bus text-lg"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-lg leading-tight">「細佬」作戰清單</h1>
-                    <p class="text-xs text-indigo-200">Manessa & Adrian 婚禮 (2026.05.24)</p>
+                    <!-- Click title 3 times to open debug time simulator -->
+                    <h1 id="app-title" class="font-bold text-lg leading-tight text-slate-800 active:opacity-50 select-none">「細佬」作戰清單</h1>
+                    <p class="text-[10px] text-slate-500 font-medium">Manessa & Adrian (24 May 2026)</p>
                 </div>
             </div>
-            <div class="flex flex-col items-end">
-                <span class="bg-indigo-900/60 px-2.5 py-1 rounded-full text-xs font-semibold border border-indigo-500/30">
-                    交通組長 & 物流
+            <div class="text-right flex flex-col items-end">
+                <span class="bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-lg text-xs font-bold border border-indigo-100">
+                    交通與物流
                 </span>
-                <span id="sync-status" class="text-[9px] text-indigo-300 mt-1"><i class="fa-solid fa-cloud"></i> 雲端同步中</span>
             </div>
         </div>
     </header>
 
-    <main class="max-w-md mx-auto px-4 mt-4 space-y-4">
+    <main class="max-w-md mx-auto px-4 mt-4 space-y-5">
 
-        <!-- Progress Tracker Dashboard Card -->
-        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
-            <div class="flex justify-between items-center mb-2">
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">任務完成進度</span>
-                <span id="progress-text" class="text-sm font-bold text-indigo-600">0 / 17 (0%)</span>
-            </div>
-            <!-- Progress Bar -->
-            <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden mb-4">
-                <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 to-blue-500 h-full w-0 transition-all duration-300"></div>
+        <!-- Real-time Time Dashboard -->
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 relative overflow-hidden">
+            <!-- Background pattern -->
+            <div class="absolute -right-4 -top-4 opacity-5 text-indigo-900 text-9xl pointer-events-none">
+                <i class="fa-solid fa-clock"></i>
             </div>
             
-            <!-- Quick Info Grid -->
-            <div class="grid grid-cols-2 gap-2 text-xs">
-                <div class="bg-indigo-50 border border-indigo-100 p-2.5 rounded-xl flex items-center gap-2">
-                    <div class="bg-indigo-600 text-white rounded-lg p-1 w-6 h-6 flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-phone"></i>
-                    </div>
+            <div class="relative z-10">
+                <div class="flex justify-between items-end mb-3">
                     <div>
-                        <div class="font-bold text-indigo-900">交通聯絡人</div>
-                        <div class="text-[10px] text-indigo-600 font-medium">確保手機暢通</div>
+                        <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-0.5">當前香港時間 (HKT)</p>
+                        <div id="live-clock" class="text-3xl font-black text-slate-800 tracking-tight tabular-nums">--:--:--</div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-0.5">全日作戰進度</p>
+                        <div id="progress-percentage" class="text-lg font-bold text-indigo-600">0%</div>
                     </div>
                 </div>
-                <div class="bg-amber-50 border border-amber-100 p-2.5 rounded-xl flex items-center gap-2">
-                    <div class="bg-amber-500 text-white rounded-lg p-1 w-6 h-6 flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-vault"></i>
+
+                <!-- Live Progress Bar (11:00 to 23:30) -->
+                <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden mb-4 relative shadow-inner">
+                    <div id="time-progress-bar" class="bg-gradient-to-r from-indigo-500 to-blue-500 h-full w-0 transition-all duration-1000 ease-linear"></div>
+                </div>
+                
+                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="relative flex h-3 w-3">
+                            <span id="active-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75 hidden"></span>
+                            <span id="active-dot" class="relative inline-flex rounded-full h-3 w-3 bg-slate-300"></span>
+                        </span>
+                        <span class="text-xs font-semibold text-slate-600">當前任務狀態</span>
                     </div>
-                    <div>
-                        <div class="font-bold text-amber-900">最高機密</div>
-                        <div class="text-[10px] text-amber-600 font-medium">22:45 移交金器</div>
-                    </div>
+                    <span id="current-task-status" class="text-xs font-bold text-slate-400">等待大日子降臨...</span>
                 </div>
             </div>
         </div>
 
-        <!-- Filter Tabs (Horizontal Scroll) -->
+        <!-- Filter Tabs -->
         <div class="flex gap-2 overflow-x-auto pb-1 custom-scrollbar snap-x">
-            <button onclick="filterPhase('all')" id="tab-all" class="tab-btn active shrink-0 px-4 py-2 text-xs font-bold rounded-full bg-indigo-600 text-white transition-all snap-start">
-                全部階段
+            <button onclick="filterPhase('all')" id="tab-all" class="tab-btn active shrink-0 px-4 py-2 text-xs font-bold rounded-full bg-indigo-600 text-white transition-all snap-start shadow-sm">
+                全日流程
             </button>
-            <button onclick="filterPhase('phase1')" id="tab-phase1" class="tab-btn shrink-0 px-4 py-2 text-xs font-semibold rounded-full bg-white text-slate-600 border border-slate-200 transition-all snap-start">
-                1. 出門與拜神 (11:15-)
+            <button onclick="filterPhase('phase1')" id="tab-phase1" class="tab-btn shrink-0 px-4 py-2 text-xs font-semibold rounded-full bg-white text-slate-600 border border-slate-200 transition-all snap-start shadow-sm hover:bg-slate-50">
+                1. 出門拜神
             </button>
-            <button onclick="filterPhase('phase2')" id="tab-phase2" class="tab-btn shrink-0 px-4 py-2 text-xs font-semibold rounded-full bg-white text-slate-600 border border-slate-200 transition-all snap-start">
-                2. M+會場設置 (15:00-)
+            <button onclick="filterPhase('phase2')" id="tab-phase2" class="tab-btn shrink-0 px-4 py-2 text-xs font-semibold rounded-full bg-white text-slate-600 border border-slate-200 transition-all snap-start shadow-sm hover:bg-slate-50">
+                2. M+設置
             </button>
-            <button onclick="filterPhase('phase3')" id="tab-phase3" class="tab-btn shrink-0 px-4 py-2 text-xs font-semibold rounded-full bg-white text-slate-600 border border-slate-200 transition-all snap-start">
-                3. 晚宴與撤退 (18:45-)
+            <button onclick="filterPhase('phase3')" id="tab-phase3" class="tab-btn shrink-0 px-4 py-2 text-xs font-semibold rounded-full bg-white text-slate-600 border border-slate-200 transition-all snap-start shadow-sm hover:bg-slate-50">
+                3. 晚宴撤退
             </button>
         </div>
 
-        <!-- Timeline Container -->
-        <div class="relative pl-4 space-y-4 border-l-2 border-slate-200 ml-2 mt-4">
+        <!-- Timeline Container (Tasks mapped with start and end times for real-time tracking) -->
+        <div class="relative pl-5 space-y-5 border-l-2 border-indigo-100 ml-2 mt-4">
 
             <!-- ================= PHASE 1 ================= -->
             <div class="timeline-group" data-phase="phase1">
-                <div class="absolute -left-[9px] bg-indigo-600 text-white text-[10px] font-black px-1.5 py-0.5 rounded-md transform -translate-y-1">
-                    11:15
+                <div class="absolute -left-[11px] bg-indigo-100 text-indigo-800 text-[10px] font-black px-1.5 py-0.5 rounded border border-indigo-200 shadow-sm transform -translate-y-1">
+                    11:00
                 </div>
-                <div class="text-xs font-extrabold text-slate-400 mb-2 uppercase tracking-wide">第一階段：出門與拜神（酒店及順風圍）</div>
                 
-                <!-- Task Card 1 -->
-                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                <!-- Task 1: 11:15 - 12:00 -->
+                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="11:15" data-end="12:00">
+                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div> <!-- Connector line -->
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-1" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-1" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
                                     <i class="fa-solid fa-bus text-indigo-500"></i>
-                                    關鍵交通：車隊Call到位
+                                    車隊Call到位
                                 </span>
-                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">11:15</span>
+                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">11:15</span>
                             </div>
                             <p class="text-xs text-slate-500 mt-1">聯絡 27座/65座接駁車（Shuttle Bus）及主花車，確保所有車輛已到達酒店大門準備出發。</p>
-                            <div class="flex items-center gap-1.5 mt-2">
-                                <span class="text-[10px] bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded-full font-medium"><i class="fa-solid fa-phone mr-1"></i>司機聯絡</span>
-                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="timeline-group space-y-3" data-phase="phase1">
-                <!-- Task Card 2 -->
-                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                <!-- Task 2: 12:00 - 13:00 -->
+                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="12:00" data-end="13:00">
+                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-2" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-2" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800">「醫肚團隊」午餐安排</span>
-                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">12:00</span>
+                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">12:00</span>
                             </div>
-                            <p class="text-xs text-slate-500 mt-1">歸類為醫肚小組，負責處理順風圍工作人員與兄弟姊妹的午餐事宜。</p>
+                            <p class="text-xs text-slate-500 mt-1">負責處理順風圍工作人員與兄弟姊妹的午餐事宜。</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Task Card 3 -->
-                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                <!-- Task 3: 13:00 - 14:05 -->
+                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="13:00" data-end="14:05">
+                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-3" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-3" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800">Zone A (嫲嫲屋) 清理裝飾</span>
-                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">13:00</span>
+                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">13:00</span>
                             </div>
-                            <p class="text-xs text-slate-500 mt-1">拜神入門完成後，清理嫲嫲屋企臨時佈置物資。隨後在原地休息充好電。</p>
+                            <p class="text-xs text-slate-500 mt-1">拜神入門完成後，清理臨時佈置物資，隨後在原地休息充好電。</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Task Card 4 -->
-                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                <!-- Task 4: 14:05 - 15:00 -->
+                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="14:05" data-end="15:00">
+                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-4" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-4" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
-                                <span class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-clock text-indigo-500 animate-pulse"></i>
-                                    轉場：27座司機準備
-                                </span>
-                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">14:05</span>
+                                <span class="font-bold text-sm text-slate-800">轉場：27座司機準備</span>
+                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">14:05</span>
                             </div>
-                            <p class="text-xs text-slate-500 mt-1">電話確認 27座接駁車 司機已 Ready，準備帶大隊前往 M+ 會場。</p>
-                            <div class="flex items-center gap-1.5 mt-2">
-                                <span class="text-[10px] bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded-full font-medium"><i class="fa-solid fa-key mr-1"></i>交通調度</span>
-                            </div>
+                            <p class="text-xs text-slate-500 mt-1">電話確認 27座接駁車司機已 Ready，準備帶大隊前往 M+ 會場。</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- ================= PHASE 2 ================= -->
-            <div class="timeline-group" data-phase="phase2">
-                <div class="absolute -left-[9px] bg-indigo-600 text-white text-[10px] font-black px-1.5 py-0.5 rounded-md transform -translate-y-1">
+            <div class="timeline-group mt-8" data-phase="phase2">
+                <div class="absolute -left-[11px] bg-indigo-100 text-indigo-800 text-[10px] font-black px-1.5 py-0.5 rounded border border-indigo-200 shadow-sm transform -translate-y-1">
                     15:00
                 </div>
-                <div class="text-xs font-extrabold text-slate-400 mb-2 uppercase tracking-wide">第二階段：會場設置與儀式（璞 @ M+）</div>
                 
-                <!-- Task Card 5 -->
-                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                <!-- Task 5: 15:00 - 16:00 -->
+                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="15:00" data-end="16:00">
+                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-5" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-5" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800">全員抵達 M+ 搬運物資</span>
-                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">15:00</span>
+                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">15:00</span>
                             </div>
-                            <p class="text-xs text-slate-500 mt-1">接駁車抵達 M+，開工與大隊一起將物資車上的所有道具運送到「璞」餐廳。</p>
+                            <p class="text-xs text-slate-500 mt-1">接駁車抵達 M+，與大隊一起將物資車上的道具運送到「璞」。</p>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="timeline-group space-y-3" data-phase="phase2">
-                <!-- Task Card 6 -->
-                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                <!-- Task 6: 16:00 - 17:00 -->
+                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="16:00" data-end="17:00">
+                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-6" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-6" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800">證婚位置 Set-up</span>
-                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">16:00 - 17:00</span>
+                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">16:00 - 17:00</span>
                             </div>
-                            <p class="text-xs text-slate-500 mt-1">在 <strong>Amy</strong> 的指揮下，與 <strong>Willson</strong> 共同負責將證婚區的所有佈置（椅子、花藝等）擺放到位。</p>
-                            <div class="flex items-center gap-1.5 mt-2">
-                                <span class="text-[10px] bg-teal-50 text-teal-600 px-2 py-0.5 rounded-full font-medium"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i>佈置組</span>
-                            </div>
+                            <p class="text-xs text-slate-500 mt-1">聽從 <strong>Amy</strong> 指揮，與 Willson 共同將證婚區佈置（椅子、花藝）擺放到位。</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Task Card 7 -->
-                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                <!-- Task 7: 17:00 - 18:15 -->
+                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="17:00" data-end="18:15">
+                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-7" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-7" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
-                                <span class="font-bold text-sm text-slate-800">Reception Standby 迎賓</span>
-                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">17:00</span>
+                                <span class="font-bold text-sm text-slate-800">Reception Standby</span>
+                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">17:00</span>
                             </div>
-                            <p class="text-xs text-slate-500 mt-1">進入接待處工作崗位，準備迎接陸續抵達的證婚來賓。</p>
+                            <p class="text-xs text-slate-500 mt-1">進入接待處工作崗位，準備迎接證婚來賓。</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Task Card 8 -->
-                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                <!-- Task 8: 18:15 - 18:45 -->
+                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-amber-200 transition-all relative overflow-hidden" data-start="18:15" data-end="18:45">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-amber-400"></div>
+                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-8" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-8" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
-                                <span class="font-bold text-sm text-slate-800">高難度物流：搬運布藝 Backdrop</span>
-                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-50 text-amber-600">18:15 - 18:30</span>
+                                <span class="font-bold text-sm text-amber-900">搬運布藝 Backdrop</span>
+                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">18:15 - 18:30</span>
                             </div>
-                            <p class="text-xs text-slate-500 mt-1">證婚禮成後，與 <strong>Willson</strong> 將極巨大的「布藝 Backdrop」搬往迎賓位置，並細心調整其闊度。</p>
-                            <div class="flex items-center gap-1.5 mt-2">
-                                <span class="text-[10px] bg-amber-50 text-amber-600 px-2 py-0.5 rounded-full font-bold"><i class="fa-solid fa-triangle-exclamation mr-1"></i>重型物資轉換</span>
-                            </div>
+                            <p class="text-xs text-slate-600 mt-1">證婚禮成後，與 Willson 將極巨大嘅布藝 Backdrop 搬往迎賓位置並調整。</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- ================= PHASE 3 ================= -->
-            <div class="timeline-group" data-phase="phase3">
-                <div class="absolute -left-[9px] bg-indigo-600 text-white text-[10px] font-black px-1.5 py-0.5 rounded-md transform -translate-y-1">
+            <div class="timeline-group mt-8" data-phase="phase3">
+                <div class="absolute -left-[11px] bg-indigo-100 text-indigo-800 text-[10px] font-black px-1.5 py-0.5 rounded border border-indigo-200 shadow-sm transform -translate-y-1">
                     18:45
                 </div>
-                <div class="text-xs font-extrabold text-slate-400 mb-2 uppercase tracking-wide">第三階段：晚宴與撤退計劃</div>
                 
-                <!-- Task Card 9 -->
-                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                <!-- Task 9: 18:45 - 19:15 -->
+                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="18:45" data-end="19:15">
+                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-9" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-9" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
-                                <span class="font-bold text-sm text-slate-800">晚宴迎賓 Reception Standby</span>
-                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">18:45 - 19:30</span>
+                                <span class="font-bold text-sm text-slate-800">晚宴迎賓 Reception</span>
+                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">18:45 - 19:30</span>
                             </div>
-                            <p class="text-xs text-slate-500 mt-1">在接待處當值，引導並協助迎賓晚宴期間到場的賓客。</p>
+                            <p class="text-xs text-slate-500 mt-1">在接待處當值，引導晚宴賓客。</p>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="timeline-group space-y-3" data-phase="phase3">
-                <!-- Task Card 10 -->
-                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                <!-- Task 10: 19:15 - 19:30 -->
+                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="19:15" data-end="19:30">
+                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-10" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-10" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800">支援女家簽到</span>
-                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">19:15</span>
+                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">19:15</span>
                             </div>
-                            <p class="text-xs text-slate-500 mt-1">留意女家簽到情況。若人手不足，彈性支援女家簽到並引導座位。</p>
+                            <p class="text-xs text-slate-500 mt-1">視乎情況，彈性支援女家簽到並引導座位。</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Task Card 11 -->
-                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                <!-- Task 11: 19:30 - 20:30 -->
+                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="19:30" data-end="20:30">
+                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-11" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-11" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
-                                <span class="font-bold text-sm text-slate-800">接待處運作</span>
-                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">19:30 - 20:30</span>
+                                <span class="font-bold text-sm text-slate-800">維持接待處運作</span>
+                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">19:30 - 20:30</span>
                             </div>
-                            <p class="text-xs text-slate-500 mt-1">維持 Reception 到首道菜上桌（預計 20:30）。</p>
+                            <p class="text-xs text-slate-500 mt-1">維持 Reception 直到首道菜上桌。</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Task Card 12 -->
-                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                <!-- Task 12: 20:30 - 21:30 -->
+                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="20:30" data-end="21:30">
+                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-12" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-12" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800">入口物資執拾、鎖入新娘房</span>
-                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">20:30</span>
+                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">20:30</span>
                             </div>
-                            <p class="text-xs text-slate-500 mt-1">與 <strong>春雨</strong> 一同將入口處的迎賓及接待物資安全收拾，搬進新娘房並鎖好，保障財物安全。</p>
+                            <p class="text-xs text-slate-500 mt-1">與春雨一同將入口接待物資安全收拾，搬進新娘房並鎖好。</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Task Card 13 -->
-                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                <!-- Task 13: 21:30 - 22:40 -->
+                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="21:30" data-end="22:40">
+                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-13" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-13" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800">敬酒環節 Standby</span>
-                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">21:30</span>
+                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">21:30</span>
                             </div>
-                            <p class="text-xs text-slate-500 mt-1">入席吃飯之餘，敬酒前準時到位 Standby，隨時應付臨時後勤需求。</p>
+                            <p class="text-xs text-slate-500 mt-1">入席食飯之餘，敬酒前準時到位 Standby，應付臨時後勤。</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Task Card 14 -->
-                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                <!-- Task 14: 22:40 - 22:45 -->
+                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="22:40" data-end="22:45">
+                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-14" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-14" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
                                     <i class="fa-solid fa-bus text-indigo-500"></i>
-                                    交通最後確認：Shuttle Ready
+                                    終極交通：Shuttle Ready
                                 </span>
-                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">22:40</span>
+                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">22:40</span>
                             </div>
-                            <p class="text-xs text-slate-500 mt-1">最後一次聯絡確認離場接駁車已就位，確保賓客可以順利上車。</p>
+                            <p class="text-xs text-slate-500 mt-1">聯絡確認離場接駁車已就位。</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Task Card 15 -->
-                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                <!-- Task 15 & 16 (Combined as simultaneous high-risk block): 22:45 - 23:15 -->
+                <div class="task-card mt-3 bg-rose-50 rounded-xl p-3.5 shadow-sm border border-rose-200 transition-all relative overflow-hidden" data-start="22:45" data-end="23:15">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-rose-500"></div>
+                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-15" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-15-16" class="local-cb mt-1 w-4 h-4 rounded text-rose-600 border-slate-300">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
-                                <span class="font-bold text-sm text-slate-800">送客分流與引導</span>
-                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">22:45</span>
+                                <span class="font-bold text-sm text-rose-900">分流送客 & 監管鏈A</span>
+                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-100 text-rose-800">22:45</span>
                             </div>
-                            <p class="text-xs text-slate-500 mt-1">送客開始，在現場引導並指引賓客前往乘坐接駁車離開。</p>
+                            <p class="text-xs text-rose-700 mt-1 font-medium">1. 引導賓客前往接駁車。<br>2. 與春雨、丁共同保管劉媽媽人情袋與金器，親手移交至劉媽媽手上。</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Task Card 16 -->
-                <div class="task-card border-2 border-rose-200 bg-rose-50/50 rounded-xl p-3.5 shadow-sm transition-all relative overflow-hidden" onclick="toggleTask(this)">
+                <!-- Task 17: 23:15 - 23:30 -->
+                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="23:15" data-end="23:30">
+                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
                     <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-16" class="task-checkbox mt-1 w-4 h-4 rounded text-rose-600 focus:ring-rose-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <span class="font-bold text-sm text-rose-900 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-triangle-exclamation text-rose-600 animate-pulse"></i>
-                                    關鍵：監管鏈 A 金器交收
-                                </span>
-                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-600 text-white">22:45 (送客後)</span>
-                            </div>
-                            <p class="text-xs text-rose-700 mt-1">與 <strong>春雨</strong>、<strong>丁</strong> 共同收集並保管<strong>劉媽媽</strong>的人情袋與所有金器。完成清點後，必須確保安全並親手移交至劉媽媽手上。</p>
-                            <div class="flex items-center gap-1.5 mt-2">
-                                <span class="text-[10px] bg-rose-100 text-rose-800 px-2 py-0.5 rounded-full font-bold"><i class="fa-solid fa-vault mr-1"></i>最高保密任務</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Task Card 17 -->
-                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
-                    <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-17" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <input type="checkbox" id="task-17" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
                         <div class="flex-1">
                             <div class="flex justify-between items-start">
                                 <span class="font-bold text-sm text-slate-800">終極撤退：物資上花車</span>
-                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">23:15</span>
+                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">23:15</span>
                             </div>
-                            <p class="text-xs text-slate-500 mt-1">Gentlemen組 全員動身，協助將現場剩餘自攜物資安全搬運上花車。任務正式圓滿完成！</p>
+                            <p class="text-xs text-slate-500 mt-1">協助將現場剩餘自攜物資搬運上花車。收工！</p>
                         </div>
                     </div>
                 </div>
             </div>
 
         </div>
-
-        <!-- Sticky Footer Notes -->
-        <div class="bg-gradient-to-r from-slate-800 to-slate-950 text-slate-100 p-4 rounded-2xl shadow-lg border border-slate-700 space-y-2 mt-6">
-            <h3 class="font-bold text-xs uppercase tracking-wider text-rose-400 flex items-center gap-1.5">
-                <i class="fa-solid fa-lightbulb"></i> 細佬專屬備忘錄
-            </h3>
-            <ul class="text-xs space-y-1.5 text-slate-300">
-                <li class="flex items-start gap-1.5">
-                    <span class="text-rose-400 font-bold">•</span>
-                    <span><strong>保持開機狀態：</strong>作為唯一的交通組長，確保手機有足夠電量，接駁車司機隨時會搵你。</span>
-                </li>
-                <li class="flex items-start gap-1.5">
-                    <span class="text-rose-400 font-bold">•</span>
-                    <span><strong>Backdrop 搬運技巧：</strong>18:15 搬運布藝背景，請事先同 Willson 視察好 M+ 現場路線，避免撞到人或場地設施。</span>
-                </li>
-            </ul>
-        </div>
-
     </main>
 
-    <!-- Firebase Integration & Interactive Logic -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // Firebase Configuration (Automatically injected by preview environment or fallback to local mock config)
-        const firebaseConfig = typeof __firebase_config !== 'undefined' 
-            ? JSON.parse(__firebase_config) 
-            : {
-                apiKey: "",
-                authDomain: "wedding-timeline-fallback.firebaseapp.com",
-                projectId: "wedding-timeline-fallback",
-                storageBucket: "wedding-timeline-fallback.appspot.com",
-                messagingSenderId: "123456789",
-                appId: "1:123456789:web:123456789"
-            };
-
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-
-        // Initialize Firebase services
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        let currentUser = null;
-        let isSyncing = false; // Flag to prevent write loops during sync reads
-
-        // Authentication Setup (RULE 3 - Auth Before Queries)
-        const initAuth = async () => {
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-            } catch (error) {
-                console.error("Authentication failed:", error);
-                showSyncStatus('error', '同步失敗 (無權限)');
-            }
-        };
-
-        initAuth();
-
-        onAuthStateChanged(auth, (user) => {
-            currentUser = user;
-            if (user) {
-                showSyncStatus('syncing', '已連線，讀取數據中...');
-                setupFirestoreListener();
-            } else {
-                showSyncStatus('offline', '離線 (未登入)');
-            }
+    <!-- UI Interaction and Real-time Time Logic -->
+    <script>
+        const WEDDING_DATE_STRING = "2026-05-24";
+        const START_TIME = new Date(`${WEDDING_DATE_STRING}T11:00:00+08:00`).getTime();
+        const END_TIME = new Date(`${WEDDING_DATE_STRING}T23:30:00+08:00`).getTime();
+        
+        let debugTimeOffset = 0;
+        let isDebugMode = false;
+        
+        // Formatter for HKT display
+        const timeFormatter = new Intl.DateTimeFormat('en-US', {
+            timeZone: 'Asia/Hong_Kong',
+            hour12: false,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
         });
 
-        // Setup Firestore Listener (RULE 1 - Strict Path & RULE 2 - No complex queries)
-        function setupFirestoreListener() {
-            if (!currentUser) return;
-            // Public path for the project: /artifacts/{appId}/public/data/{collectionName}/{documentId}
-            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'progress', 'brother');
+        const dateFormatter = new Intl.DateTimeFormat('en-US', {
+            timeZone: 'Asia/Hong_Kong',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        });
 
-            onSnapshot(docRef, (docSnap) => {
-                isSyncing = true;
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    const checkedTasks = data.checkedTasks || {};
-                    
-                    const checkboxes = document.querySelectorAll('.task-checkbox');
-                    checkboxes.forEach(cb => {
-                        cb.checked = !!checkedTasks[cb.id];
-                    });
-                    
-                    showSyncStatus('success', '數據與雲端實時同步');
-                } else {
-                    showSyncStatus('success', '雲端暫無舊存檔，隨時可儲存');
-                }
-                updateProgressUI();
-                isSyncing = false;
-            }, (error) => {
-                console.error("Firestore loading error:", error);
-                showSyncStatus('error', '雲端連線異常');
-                updateProgressUI();
-                isSyncing = false;
+        // Initialize checkboxes with localStorage (offline persistence)
+        function initLocalCheckboxes() {
+            document.querySelectorAll('.local-cb').forEach(cb => {
+                const isChecked = localStorage.getItem(`brother_task_${cb.id}`) === 'true';
+                cb.checked = isChecked;
+                updateTaskVisuals(cb);
+
+                cb.addEventListener('change', (e) => {
+                    localStorage.setItem(`brother_task_${e.target.id}`, e.target.checked);
+                    updateTaskVisuals(e.target);
+                });
             });
         }
 
-        // Save states back to Firestore on click
-        async function saveProgressToFirestore() {
-            if (!currentUser || isSyncing) return;
-            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'progress', 'brother');
-
-            const checkedTasks = {};
-            document.querySelectorAll('.task-checkbox').forEach(cb => {
-                if (cb.checked) {
-                    checkedTasks[cb.id] = true;
-                }
-            });
-
-            showSyncStatus('saving', '正同步至雲端...');
-
-            try {
-                await setDoc(docRef, { checkedTasks }, { merge: true });
-                showSyncStatus('success', '數據已安全保存至雲端');
-            } catch (error) {
-                console.error("Firestore saving error:", error);
-                showSyncStatus('error', '存檔失敗，請確認網絡');
+        function updateTaskVisuals(checkbox) {
+            const card = checkbox.closest('.task-card');
+            if (checkbox.checked) {
+                card.classList.add('opacity-40');
+            } else {
+                card.classList.remove('opacity-40');
             }
         }
 
-        // Global UI Sync status indicator
-        function showSyncStatus(type, message) {
-            const statusEl = document.getElementById('sync-status');
-            if (!statusEl) return;
-            
-            let icon = '<i class="fa-solid fa-cloud"></i>';
-            if (type === 'syncing' || type === 'saving') {
-                icon = '<i class="fa-solid fa-cloud-arrow-up animate-pulse text-indigo-300"></i>';
-            } else if (type === 'success') {
-                icon = '<i class="fa-solid fa-cloud-check text-emerald-400"></i>';
-            } else if (type === 'error') {
-                icon = '<i class="fa-solid fa-cloud-exclamation text-rose-400"></i>';
-            } else if (type === 'offline') {
-                icon = '<i class="fa-solid fa-cloud-slash text-slate-400"></i>';
-            }
-            statusEl.innerHTML = `${icon} <span class="ml-1">${message}</span>`;
+        // Parse time attribute to timestamp
+        function parseTaskTime(timeString) {
+            return new Date(`${WEDDING_DATE_STRING}T${timeString}:00+08:00`).getTime();
         }
 
-        // Local State Updater
-        function updateProgressUI() {
-            const checkboxes = document.querySelectorAll('.task-checkbox');
-            const total = checkboxes.length;
-            let completed = 0;
+        // Real-time Engine
+        function tick() {
+            const realNow = new Date().getTime();
+            const now = realNow + debugTimeOffset;
             
-            checkboxes.forEach(cb => {
-                const card = cb.closest('.task-card');
-                if (cb.checked) {
-                    completed++;
-                    card.classList.add('opacity-60', 'bg-slate-100/50');
-                    card.classList.remove('bg-white');
-                } else {
-                    card.classList.remove('opacity-60', 'bg-slate-100/50');
-                    if (!card.classList.contains('border-rose-200')) {
-                        card.classList.add('bg-white');
+            // 1. Update Live Digital Clock
+            const hkTimeString = timeFormatter.format(new Date(now));
+            const hkDateString = dateFormatter.format(new Date(now));
+            
+            const isWeddingDay = hkDateString === "05/24/2026";
+            
+            if (isDebugMode) {
+                document.getElementById('live-clock').innerHTML = `<span class="text-rose-500">${hkTimeString}</span>`;
+            } else {
+                document.getElementById('live-clock').innerText = hkTimeString;
+            }
+
+            // 2. Update Progress Bar
+            let percentage = 0;
+            if (now >= END_TIME) {
+                percentage = 100;
+            } else if (now > START_TIME && now < END_TIME) {
+                percentage = ((now - START_TIME) / (END_TIME - START_TIME)) * 100;
+            }
+            
+            document.getElementById('progress-percentage').innerText = `${Math.floor(percentage)}%`;
+            document.getElementById('time-progress-bar').style.width = `${percentage}%`;
+
+            // 3. Highlight Current Task
+            let activeTaskFound = false;
+            let currentTaskName = "";
+            const taskCards = document.querySelectorAll('.task-card');
+            
+            taskCards.forEach(card => {
+                const start = parseTaskTime(card.dataset.start);
+                const end = parseTaskTime(card.dataset.end);
+                const timeBadge = card.querySelector('.time-badge');
+
+                // Reset styles
+                card.classList.remove('task-active');
+                timeBadge.classList.remove('bg-indigo-500', 'text-white');
+                timeBadge.classList.add('bg-slate-100', 'text-slate-600');
+
+                if (isWeddingDay || isDebugMode) {
+                    if (now >= start && now < end) {
+                        // Task is active!
+                        card.classList.add('task-active');
+                        timeBadge.classList.remove('bg-slate-100', 'text-slate-600');
+                        timeBadge.classList.add('bg-indigo-500', 'text-white');
+                        activeTaskFound = true;
+                        currentTaskName = card.querySelector('.font-bold').innerText;
                     }
                 }
             });
 
-            const percent = Math.round((completed / total) * 100);
-            
-            // Update Dashboard UI
-            document.getElementById('progress-text').innerText = `${completed} / ${total} (${percent}%)`;
-            document.getElementById('progress-bar').style.width = `${percent}%`;
+            // 4. Update Status UI
+            const activeDot = document.getElementById('active-dot');
+            const activePing = document.getElementById('active-ping');
+            const statusText = document.getElementById('current-task-status');
+
+            if (!isWeddingDay && !isDebugMode) {
+                activeDot.className = "relative inline-flex rounded-full h-3 w-3 bg-slate-300";
+                activePing.classList.add('hidden');
+                statusText.innerText = "等待大日子降臨...";
+                statusText.className = "text-xs font-bold text-slate-400";
+            } else if (now < START_TIME) {
+                activeDot.className = "relative inline-flex rounded-full h-3 w-3 bg-amber-400";
+                activePing.classList.add('hidden');
+                statusText.innerText = "準備出發";
+                statusText.className = "text-xs font-bold text-amber-600";
+            } else if (now >= END_TIME) {
+                activeDot.className = "relative inline-flex rounded-full h-3 w-3 bg-emerald-500";
+                activePing.classList.add('hidden');
+                statusText.innerText = "作戰圓滿結束！辛苦晒！";
+                statusText.className = "text-xs font-bold text-emerald-600";
+            } else if (activeTaskFound) {
+                activeDot.className = "relative inline-flex rounded-full h-3 w-3 bg-indigo-500";
+                activePing.classList.remove('hidden');
+                statusText.innerText = currentTaskName;
+                statusText.className = "text-xs font-bold text-indigo-600 truncate max-w-[150px] text-right";
+            } else {
+                // In between tasks or unmapped buffer times
+                activeDot.className = "relative inline-flex rounded-full h-3 w-3 bg-blue-400";
+                activePing.classList.add('hidden');
+                statusText.innerText = "緩衝 / 待命中";
+                statusText.className = "text-xs font-bold text-blue-600";
+            }
         }
 
-        // Core UI Actions bounded to window scope for inline HTML onclick attributes
-        window.toggleTask = function(card) {
-            const checkbox = card.querySelector('.task-checkbox');
-            checkbox.checked = !checkbox.checked;
-            updateProgress();
-        };
-
-        window.updateProgress = function() {
-            updateProgressUI();
-            saveProgressToFirestore();
-        };
-
+        // Tab Filtering logic
         window.filterPhase = function(phaseId) {
-            // Update Tab active styling
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('bg-indigo-600', 'text-white', 'active');
-                btn.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
+                btn.classList.add('bg-white', 'text-slate-600');
             });
-
             const activeTab = document.getElementById(`tab-${phaseId}`);
-            activeTab.classList.remove('bg-white', 'text-slate-600', 'border-slate-200');
+            activeTab.classList.remove('bg-white', 'text-slate-600');
             activeTab.classList.add('bg-indigo-600', 'text-white', 'active');
 
-            // Toggle timeline items
             document.querySelectorAll('.timeline-group').forEach(group => {
                 if (phaseId === 'all' || group.getAttribute('data-phase') === phaseId) {
                     group.style.display = 'block';
@@ -608,9 +550,36 @@
             });
         };
 
-        // Bootstrap on DOM Load
+        // Hidden Debug Tool (Click title 3 times)
+        let clickCount = 0;
+        let clickTimer;
+        document.getElementById('app-title').addEventListener('click', () => {
+            clickCount++;
+            clearTimeout(clickTimer);
+            clickTimer = setTimeout(() => { clickCount = 0; }, 1000);
+            
+            if (clickCount === 3) {
+                clickCount = 0;
+                const simulateTime = prompt("【除錯模式】輸入你想模擬嘅婚禮時間 (例如 11:30, 18:15)\n取消可關閉除錯模式:", "11:15");
+                if (simulateTime && simulateTime.includes(':')) {
+                    const targetTimestamp = parseTaskTime(simulateTime);
+                    debugTimeOffset = targetTimestamp - new Date().getTime();
+                    isDebugMode = true;
+                    tick(); // Immediate update
+                    alert(`已將時間模擬至 ${simulateTime}`);
+                } else {
+                    debugTimeOffset = 0;
+                    isDebugMode = false;
+                    alert("除錯模式已關閉，恢復真實時間。");
+                }
+            }
+        });
+
+        // Bootstrap
         window.addEventListener('DOMContentLoaded', () => {
-            updateProgressUI();
+            initLocalCheckboxes();
+            tick(); // Initial call
+            setInterval(tick, 1000); // 1-second interval loop
         });
     </script>
 </body>
