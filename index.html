@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>細佬婚禮全日作戰手冊：交通與物流指南</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen pb-12">
+
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-indigo-800 to-indigo-950 text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-white/20 p-2 rounded-full">
+                    <i class="fa-solid fa-bus text-indigo-200 text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">「細佬」作戰清單</h1>
+                    <p class="text-xs text-indigo-200">Manessa & Adrian 婚禮 (2026.05.24)</p>
+                </div>
+            </div>
+            <div class="bg-indigo-900/60 px-2.5 py-1 rounded-full text-xs font-semibold border border-indigo-500/30">
+                交通組長 & 物流
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-md mx-auto px-4 mt-4 space-y-4">
+
+        <!-- Progress Tracker Dashboard Card -->
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
+            <div class="flex justify-between items-center mb-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">任務完成進度</span>
+                <span id="progress-text" class="text-sm font-bold text-indigo-600">0 / 17 (0%)</span>
+            </div>
+            <!-- Progress Bar -->
+            <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden mb-4">
+                <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 to-blue-500 h-full w-0 transition-all duration-300"></div>
+            </div>
+            
+            <!-- Quick Info Grid -->
+            <div class="grid grid-cols-2 gap-2 text-xs">
+                <div class="bg-indigo-50 border border-indigo-100 p-2.5 rounded-xl flex items-center gap-2">
+                    <div class="bg-indigo-600 text-white rounded-lg p-1 w-6 h-6 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-indigo-900">交通聯絡人</div>
+                        <div class="text-[10px] text-indigo-600 font-medium">確保手機暢通</div>
+                    </div>
+                </div>
+                <div class="bg-amber-50 border border-amber-100 p-2.5 rounded-xl flex items-center gap-2">
+                    <div class="bg-amber-500 text-white rounded-lg p-1 w-6 h-6 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-vault"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-amber-900">最高機密</div>
+                        <div class="text-[10px] text-amber-600 font-medium">22:45 移交金器</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Tabs (Horizontal Scroll) -->
+        <div class="flex gap-2 overflow-x-auto pb-1 custom-scrollbar snap-x">
+            <button onclick="filterPhase('all')" id="tab-all" class="tab-btn active shrink-0 px-4 py-2 text-xs font-bold rounded-full bg-indigo-600 text-white transition-all snap-start">
+                全部階段
+            </button>
+            <button onclick="filterPhase('phase1')" id="tab-phase1" class="tab-btn shrink-0 px-4 py-2 text-xs font-semibold rounded-full bg-white text-slate-600 border border-slate-200 transition-all snap-start">
+                1. 出門與拜神 (11:15-)
+            </button>
+            <button onclick="filterPhase('phase2')" id="tab-phase2" class="tab-btn shrink-0 px-4 py-2 text-xs font-semibold rounded-full bg-white text-slate-600 border border-slate-200 transition-all snap-start">
+                2. M+會場設置 (15:00-)
+            </button>
+            <button onclick="filterPhase('phase3')" id="tab-phase3" class="tab-btn shrink-0 px-4 py-2 text-xs font-semibold rounded-full bg-white text-slate-600 border border-slate-200 transition-all snap-start">
+                3. 晚宴與撤退 (18:45-)
+            </button>
+        </div>
+
+        <!-- Timeline Container -->
+        <div class="relative pl-4 space-y-4 border-l-2 border-slate-200 ml-2 mt-4">
+
+            <!-- ================= PHASE 1 ================= -->
+            <div class="timeline-group" data-phase="phase1">
+                <div class="absolute -left-[9px] bg-indigo-600 text-white text-[10px] font-black px-1.5 py-0.5 rounded-md transform -translate-y-1">
+                    11:15
+                </div>
+                <div class="text-xs font-extrabold text-slate-400 mb-2 uppercase tracking-wide">第一階段：出門與拜神（酒店及順風圍）</div>
+                
+                <!-- Task Card 1 -->
+                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-bus text-indigo-500"></i>
+                                    關鍵交通：車隊Call到位
+                                </span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">11:15</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">聯絡 27座/65座接駁車（Shuttle Bus）及主花車，確保所有車輛已到達酒店大門準備出發。</p>
+                            <div class="flex items-center gap-1.5 mt-2">
+                                <span class="text-[10px] bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded-full font-medium"><i class="fa-solid fa-phone mr-1"></i>司機聯絡</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-group space-y-3" data-phase="phase1">
+                <!-- Task Card 2 -->
+                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-sm text-slate-800">「醫肚團隊」午餐安排</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">12:00</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">歸類為醫肚小組，負責處理順風圍工作人員與兄弟姊妹的午餐事宜。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Task Card 3 -->
+                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-sm text-slate-800">Zone A (嫲嫲屋) 清理裝飾</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">13:00</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">拜神入門完成後，清理嫲嫲屋企臨時佈置物資。隨後在原地休息充好電。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Task Card 4 -->
+                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-clock text-indigo-500 animate-pulse"></i>
+                                    轉場：27座司機準備
+                                </span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">14:05</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">電話確認 27座接駁車 司機已 Ready，準備帶大隊前往 M+ 會場。</p>
+                            <div class="flex items-center gap-1.5 mt-2">
+                                <span class="text-[10px] bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded-full font-medium"><i class="fa-solid fa-key mr-1"></i>交通調度</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= PHASE 2 ================= -->
+            <div class="timeline-group" data-phase="phase2">
+                <div class="absolute -left-[9px] bg-indigo-600 text-white text-[10px] font-black px-1.5 py-0.5 rounded-md transform -translate-y-1">
+                    15:00
+                </div>
+                <div class="text-xs font-extrabold text-slate-400 mb-2 uppercase tracking-wide">第二階段：會場設置與儀式（璞 @ M+）</div>
+                
+                <!-- Task Card 5 -->
+                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-sm text-slate-800">全員抵達 M+ 搬運物資</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">15:00</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">接駁車抵達 M+，開工與大隊一起將物資車上的所有道具運送到「璞」餐廳。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-group space-y-3" data-phase="phase2">
+                <!-- Task Card 6 -->
+                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-sm text-slate-800">證婚位置 Set-up</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">16:00 - 17:00</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">在 <strong>Amy</strong> 的指揮下，與 <strong>Willson</strong> 共同負責將證婚區的所有佈置（椅子、花藝等）擺放到位。</p>
+                            <div class="flex items-center gap-1.5 mt-2">
+                                <span class="text-[10px] bg-teal-50 text-teal-600 px-2 py-0.5 rounded-full font-medium"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i>佈置組</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Task Card 7 -->
+                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-sm text-slate-800">Reception Standby 迎賓</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">17:00</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">進入接待處工作崗位，準備迎接陸續抵達的證婚來賓。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Task Card 8 -->
+                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-sm text-slate-800">高難度物流：搬運布藝 Backdrop</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-50 text-amber-600">18:15 - 18:30</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">證婚禮成後，與 <strong>Willson</strong> 將極巨大的「布藝 Backdrop」搬往迎賓位置，並細心調整其闊度。</p>
+                            <div class="flex items-center gap-1.5 mt-2">
+                                <span class="text-[10px] bg-amber-50 text-amber-600 px-2 py-0.5 rounded-full font-bold"><i class="fa-solid fa-triangle-exclamation mr-1"></i>重型物資轉換</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= PHASE 3 ================= -->
+            <div class="timeline-group" data-phase="phase3">
+                <div class="absolute -left-[9px] bg-indigo-600 text-white text-[10px] font-black px-1.5 py-0.5 rounded-md transform -translate-y-1">
+                    18:45
+                </div>
+                <div class="text-xs font-extrabold text-slate-400 mb-2 uppercase tracking-wide">第三階段：晚宴與撤退計劃</div>
+                
+                <!-- Task Card 9 -->
+                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-sm text-slate-800">晚宴迎賓 Reception Standby</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">18:45 - 19:30</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">在接待處當值，引導並協助迎賓晚宴期間到場的賓客。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-group space-y-3" data-phase="phase3">
+                <!-- Task Card 10 -->
+                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-sm text-slate-800">支援女家簽到</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">19:15</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">留意女家簽到情況。若人手不足，彈性支援女家簽到並引導座位。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Task Card 11 -->
+                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-sm text-slate-800">接待處運作</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">19:30 - 20:30</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">維持 Reception 到首道菜上桌（預計 20:30）。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Task Card 12 -->
+                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-sm text-slate-800">入口物資執拾、鎖入新娘房</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">20:30</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">與 <strong>春雨</strong> 一同將入口處的迎賓及接待物資安全收拾，搬進新娘房並鎖好，保障財物安全。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Task Card 13 -->
+                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-sm text-slate-800">敬酒環節 Standby</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">21:30</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">入席吃飯之餘，敬酒前準時到位 Standby，隨時應付臨時後勤需求。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Task Card 14 -->
+                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-bus text-indigo-500"></i>
+                                    交通最後確認：Shuttle Ready
+                                </span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">22:40</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">最後一次聯絡確認離場接駁車已就位，確保賓客可以順利上車。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Task Card 15 -->
+                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-sm text-slate-800">送客分流與引導</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">22:45</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">送客開始，在現場引導並指引賓客前往乘坐接駁車離開。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Task Card 16 -->
+                <div class="task-card border-2 border-rose-200 bg-rose-50/50 rounded-xl p-3.5 shadow-sm transition-all relative overflow-hidden" onclick="toggleTask(this)">
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-rose-600 focus:ring-rose-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-sm text-rose-900 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-triangle-exclamation text-rose-600 animate-pulse"></i>
+                                    關鍵：監管鏈 A 金器交收
+                                </span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-600 text-white">22:45 (送客後)</span>
+                            </div>
+                            <p class="text-xs text-rose-700 mt-1">與 <strong>春雨</strong>、<strong>丁</strong> 共同收集並保管<strong>劉媽媽</strong>的人情袋與所有金器。完成清點後，必須確保安全並親手移交至劉媽媽手上。</p>
+                            <div class="flex items-center gap-1.5 mt-2">
+                                <span class="text-[10px] bg-rose-100 text-rose-800 px-2 py-0.5 rounded-full font-bold"><i class="fa-solid fa-vault mr-1"></i>最高保密任務</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Task Card 17 -->
+                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 transition-all hover:border-slate-300 relative overflow-hidden" onclick="toggleTask(this)">
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" class="task-checkbox mt-1 w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer border-slate-300" onclick="event.stopPropagation(); updateProgress();">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <span class="font-bold text-sm text-slate-800">終極撤退：物資上花車</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">23:15</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">Gentlemen組 全員動身，協助將現場剩餘自攜物資安全搬運上花車。任務正式圓滿完成！</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sticky Footer Notes -->
+        <div class="bg-gradient-to-r from-slate-800 to-slate-950 text-slate-100 p-4 rounded-2xl shadow-lg border border-slate-700 space-y-2 mt-6">
+            <h3 class="font-bold text-xs uppercase tracking-wider text-rose-400 flex items-center gap-1.5">
+                <i class="fa-solid fa-lightbulb"></i> 細佬專屬備忘錄
+            </h3>
+            <ul class="text-xs space-y-1.5 text-slate-300">
+                <li class="flex items-start gap-1.5">
+                    <span class="text-rose-400 font-bold">•</span>
+                    <span><strong>保持開機狀態：</strong>作為唯一的交通組長，確保手機有足夠電量，接駁車司機隨時會搵你。</span>
+                </li>
+                <li class="flex items-start gap-1.5">
+                    <span class="text-rose-400 font-bold">•</span>
+                    <span><strong>Backdrop 搬運技巧：</strong>18:15 搬運布藝背景，請事先同 Willson 視察好 M+ 現場路線，避免撞到人或場地設施。</span>
+                </li>
+            </ul>
+        </div>
+
+    </main>
+
+    <!-- Interactive Logic -->
+    <script>
+        function toggleTask(card) {
+            const checkbox = card.querySelector('.task-checkbox');
+            checkbox.checked = !checkbox.checked;
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('.task-checkbox');
+            const total = checkboxes.length;
+            let completed = 0;
+            
+            checkboxes.forEach(cb => {
+                const card = cb.closest('.task-card');
+                if (cb.checked) {
+                    completed++;
+                    card.classList.add('opacity-60', 'bg-slate-100/50');
+                    card.classList.remove('bg-white');
+                } else {
+                    card.classList.remove('opacity-60', 'bg-slate-100/50');
+                    if (!card.classList.contains('border-rose-200')) {
+                        card.classList.add('bg-white');
+                    }
+                }
+            });
+
+            const percent = Math.round((completed / total) * 100);
+            
+            // Update Dashboard UI
+            document.getElementById('progress-text').innerText = `${completed} / ${total} (${percent}%)`;
+            document.getElementById('progress-bar').style.width = `${percent}%`;
+        }
+
+        function filterPhase(phaseId) {
+            // Update Tab active styling
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-600', 'text-white', 'active');
+                btn.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
+            });
+
+            const activeTab = document.getElementById(`tab-${phaseId}`);
+            activeTab.classList.remove('bg-white', 'text-slate-600', 'border-slate-200');
+            activeTab.classList.add('bg-indigo-600', 'text-white', 'active');
+
+            // Toggle timeline items
+            document.querySelectorAll('.timeline-group').forEach(group => {
+                if (phaseId === 'all' || group.getAttribute('data-phase') === phaseId) {
+                    group.style.display = 'block';
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+        }
+
+        window.onload = function() {
+            updateProgress();
+        }
+    </script>
+</body>
+</html>
