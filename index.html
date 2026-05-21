@@ -3,584 +3,535 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>細佬婚禮全日作戰手冊：交通與物流指南</title>
-    <!-- Tailwind CSS CDN -->
+    <title>Manessa姊妹團</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --cream:   #fffdf7;
+            --blush:   #fef9c3;
+            --amber-lt:#fde68a;
+            --amber:   #f59e0b;
+            --amber-dk:#b45309;
+            --gold:    #d97706;
+            --gold-lt: #fef3c7;
+            --gold-bd: #fbbf24;
+        }
         body {
-            font-family: 'Inter', 'Noto Sans TC', sans-serif;
-            background-color: #f8fafc; /* bg-slate-50 */
+            font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+            background-color: var(--cream);
+            background-image:
+                radial-gradient(ellipse at 10% 0%, #fef3c755 0%, transparent 50%),
+                radial-gradient(ellipse at 90% 100%, #fef3c733 0%, transparent 50%);
         }
-        .custom-scrollbar::-webkit-scrollbar {
-            height: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 2px;
-        }
-        /* Active task pulse effect */
+        .font-display { font-family: 'Cormorant Garamond', Georgia, serif; }
+        .custom-scrollbar::-webkit-scrollbar { height: 3px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--amber-lt); border-radius: 99px; }
+        .task-card { transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
         .task-active {
-            border-color: #6366f1 !important; /* indigo-500 */
-            background-color: #eef2ff !important; /* indigo-50 */
-            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
-            transition: all 0.3s ease;
+            border-color: var(--amber) !important;
+            background-color: #fffbeb !important;
+            box-shadow: 0 8px 24px -4px rgba(245,158,11,0.15);
+            transform: scale(1.012);
+        }
+        .task-urgent {
+            border-color: var(--gold-bd) !important;
+            background: linear-gradient(135deg, var(--gold-lt) 0%, #fffbf0 100%) !important;
+        }
+        .task-active.task-urgent {
+            border-color: var(--gold) !important;
+            box-shadow: 0 8px 24px -4px rgba(217,119,6,0.2);
+        }
+        #time-progress-bar {
+            background: linear-gradient(90deg, #fbbf24, #f59e0b, #d97706);
+            background-size: 200% 100%;
+            animation: shimmer 3s ease infinite;
+        }
+        @keyframes shimmer {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .day-divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .day-divider::before,
+        .day-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--amber-lt), transparent);
         }
     </style>
 </head>
-<body class="text-slate-800 min-h-screen pb-12">
+<body class="text-slate-800 min-h-screen pb-20">
 
-    <!-- Header Section -->
-    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-50 shadow-sm border-b border-slate-200">
+    <!-- Header -->
+    <header class="bg-white/85 backdrop-blur-md sticky top-0 z-50 shadow-sm border-b border-amber-100">
         <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="bg-indigo-100 p-2 rounded-xl text-indigo-600 border border-indigo-200">
-                    <i class="fa-solid fa-bus text-lg"></i>
+                <div class="bg-amber-50 p-2 rounded-xl border border-amber-100 text-amber-500">
+                    <i class="fa-solid fa-crown text-lg"></i>
                 </div>
                 <div>
-                    <!-- Click title 3 times to open debug time simulator -->
-                    <h1 id="app-title" class="font-bold text-lg leading-tight text-slate-800 active:opacity-50 select-none">「細佬」作戰清單</h1>
-                    <p class="text-[10px] text-slate-500 font-medium">Manessa & Adrian (24 May 2026)</p>
+                    <h1 id="app-title"
+                        class="font-display font-bold text-base leading-tight text-slate-800 italic select-none active:opacity-60 cursor-default"
+                        style="letter-spacing:0.01em;">
+                        姊妹聯合作戰指揮部
+                    </h1>
+                    <p class="text-[10px] text-amber-500 font-bold tracking-wide">
+                        ✦ Manessa &amp; Adrian · 23–24 May 2026 ✦
+                    </p>
                 </div>
             </div>
-            <div class="text-right flex flex-col items-end">
-                <span class="bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-lg text-xs font-bold border border-indigo-100">
-                    交通與物流
-                </span>
-            </div>
+            <span class="bg-amber-50 text-amber-600 px-2 py-0.5 rounded-md text-[10px] font-black border border-amber-200 tracking-wider">LIVE</span>
         </div>
     </header>
 
-    <main class="max-w-md mx-auto px-4 mt-4 space-y-5">
+    <main class="max-w-md mx-auto px-4 mt-5 space-y-5">
 
-        <!-- Real-time Time Dashboard -->
-        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 relative overflow-hidden">
-            <!-- Background pattern -->
-            <div class="absolute -right-4 -top-4 opacity-5 text-indigo-900 text-9xl pointer-events-none">
-                <i class="fa-solid fa-clock"></i>
-            </div>
-            
+        <!-- Real-time Status Dashboard -->
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-amber-100 relative overflow-hidden">
+            <div class="absolute -right-3 -top-3 opacity-[0.05] text-amber-900 text-[7rem] pointer-events-none select-none leading-none">✧</div>
             <div class="relative z-10">
                 <div class="flex justify-between items-end mb-3">
                     <div>
-                        <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-0.5">當前香港時間 (HKT)</p>
-                        <div id="live-clock" class="text-3xl font-black text-slate-800 tracking-tight tabular-nums">--:--:--</div>
+                        <p id="clock-label" class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">當前香港時間 (HKT)</p>
+                        <div id="live-clock" class="font-display text-3xl font-bold text-slate-800 tracking-tight tabular-nums" style="letter-spacing:-0.02em;">--:--:--</div>
                     </div>
                     <div class="text-right">
-                        <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-0.5">全日作戰進度</p>
-                        <div id="progress-percentage" class="text-lg font-bold text-indigo-600">0%</div>
+                        <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">聯防總進度</p>
+                        <div id="progress-percentage" class="font-display text-xl font-bold text-amber-500">0%</div>
                     </div>
                 </div>
-
-                <!-- Live Progress Bar (11:00 to 23:30) -->
-                <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden mb-4 relative shadow-inner">
-                    <div id="time-progress-bar" class="bg-gradient-to-r from-indigo-500 to-blue-500 h-full w-0 transition-all duration-1000 ease-linear"></div>
+                <div class="w-full bg-amber-50 h-2 rounded-full overflow-hidden mb-4 border border-amber-100">
+                    <div id="time-progress-bar" class="h-full w-0 transition-all duration-1000 ease-linear rounded-full"></div>
                 </div>
-                
-                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <span class="relative flex h-3 w-3">
-                            <span id="active-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75 hidden"></span>
-                            <span id="active-dot" class="relative inline-flex rounded-full h-3 w-3 bg-slate-300"></span>
+                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-2 shrink-0">
+                        <span class="relative flex h-2.5 w-2.5">
+                            <span id="active-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75 hidden"></span>
+                            <span id="active-dot" class="relative inline-flex rounded-full h-2.5 w-2.5 bg-slate-300"></span>
                         </span>
-                        <span class="text-xs font-semibold text-slate-600">當前任務狀態</span>
+                        <span class="text-[11px] font-bold text-slate-500">當前指令</span>
                     </div>
-                    <span id="current-task-status" class="text-xs font-bold text-slate-400">等待大日子降臨...</span>
+                    <span id="current-task-status" class="text-[11px] font-bold text-slate-400 truncate text-right">等待大日子降臨...</span>
                 </div>
             </div>
         </div>
 
-        <!-- Filter Tabs -->
-        <div class="flex gap-2 overflow-x-auto pb-1 custom-scrollbar snap-x">
-            <button onclick="filterPhase('all')" id="tab-all" class="tab-btn active shrink-0 px-4 py-2 text-xs font-bold rounded-full bg-indigo-600 text-white transition-all snap-start shadow-sm">
-                全日流程
-            </button>
-            <button onclick="filterPhase('phase1')" id="tab-phase1" class="tab-btn shrink-0 px-4 py-2 text-xs font-semibold rounded-full bg-white text-slate-600 border border-slate-200 transition-all snap-start shadow-sm hover:bg-slate-50">
-                1. 出門拜神
-            </button>
-            <button onclick="filterPhase('phase2')" id="tab-phase2" class="tab-btn shrink-0 px-4 py-2 text-xs font-semibold rounded-full bg-white text-slate-600 border border-slate-200 transition-all snap-start shadow-sm hover:bg-slate-50">
-                2. M+設置
-            </button>
-            <button onclick="filterPhase('phase3')" id="tab-phase3" class="tab-btn shrink-0 px-4 py-2 text-xs font-semibold rounded-full bg-white text-slate-600 border border-slate-200 transition-all snap-start shadow-sm hover:bg-slate-50">
-                3. 晚宴撤退
-            </button>
+        <!-- Crew Selector -->
+        <div class="space-y-2">
+            <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400">✦ 選擇作戰人員</p>
+            <div class="flex gap-1.5 overflow-x-auto pb-1 custom-scrollbar snap-x">
+                <button onclick="switchCrew('amy')"    id="crew-amy"    class="crew-btn shrink-0 px-3.5 py-2 text-xs font-bold rounded-xl border snap-start transition-all">Amy (總指揮)</button>
+                <button onclick="switchCrew('aq')"     id="crew-aq"     class="crew-btn shrink-0 px-3.5 py-2 text-xs font-bold rounded-xl border snap-start transition-all">AQ (伴娘)</button>
+                <button onclick="switchCrew('joanne')" id="crew-joanne" class="crew-btn shrink-0 px-3.5 py-2 text-xs font-bold rounded-xl border snap-start transition-all">Joanne (接待)</button>
+                <button onclick="switchCrew('renee')"  id="crew-renee"  class="crew-btn shrink-0 px-3.5 py-2 text-xs font-bold rounded-xl border snap-start transition-all">Renee (接待)</button>
+                <button onclick="switchCrew('jason')"  id="crew-jason"  class="crew-btn shrink-0 px-3.5 py-2 text-xs font-bold rounded-xl border snap-start transition-all">Jason (影音)</button>
+            </div>
         </div>
 
-        <!-- Timeline Container (Tasks mapped with start and end times for real-time tracking) -->
-        <div class="relative pl-5 space-y-5 border-l-2 border-indigo-100 ml-2 mt-4">
-
-            <!-- ================= PHASE 1 ================= -->
-            <div class="timeline-group" data-phase="phase1">
-                <div class="absolute -left-[11px] bg-indigo-100 text-indigo-800 text-[10px] font-black px-1.5 py-0.5 rounded border border-indigo-200 shadow-sm transform -translate-y-1">
-                    11:00
-                </div>
-                
-                <!-- Task 1: 11:15 - 12:00 -->
-                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="11:15" data-end="12:00">
-                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div> <!-- Connector line -->
-                    <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-1" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <span class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-bus text-indigo-500"></i>
-                                    車隊Call到位
-                                </span>
-                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">11:15</span>
-                            </div>
-                            <p class="text-xs text-slate-500 mt-1">聯絡 27座/65座接駁車（Shuttle Bus）及主花車，確保所有車輛已到達酒店大門準備出發。</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Task 2: 12:00 - 13:00 -->
-                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="12:00" data-end="13:00">
-                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
-                    <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-2" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <span class="font-bold text-sm text-slate-800">「醫肚團隊」午餐安排</span>
-                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">12:00</span>
-                            </div>
-                            <p class="text-xs text-slate-500 mt-1">負責處理順風圍工作人員與兄弟姊妹的午餐事宜。</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Task 3: 13:00 - 14:05 -->
-                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="13:00" data-end="14:05">
-                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
-                    <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-3" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <span class="font-bold text-sm text-slate-800">Zone A (嫲嫲屋) 清理裝飾</span>
-                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">13:00</span>
-                            </div>
-                            <p class="text-xs text-slate-500 mt-1">拜神入門完成後，清理臨時佈置物資，隨後在原地休息充好電。</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Task 4: 14:05 - 15:00 -->
-                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="14:05" data-end="15:00">
-                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
-                    <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-4" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <span class="font-bold text-sm text-slate-800">轉場：27座司機準備</span>
-                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">14:05</span>
-                            </div>
-                            <p class="text-xs text-slate-500 mt-1">電話確認 27座接駁車司機已 Ready，準備帶大隊前往 M+ 會場。</p>
-                        </div>
-                    </div>
-                </div>
+        <!-- Crew Profile Card -->
+        <div id="crew-profile" class="bg-white rounded-2xl px-4 py-3 border border-amber-100 shadow-sm flex items-center gap-3">
+            <div id="profile-icon-wrap" class="bg-amber-50 rounded-xl p-2.5 text-amber-500 border border-amber-100 shrink-0">
+                <i id="profile-icon" class="fa-solid fa-user text-sm"></i>
             </div>
-
-            <!-- ================= PHASE 2 ================= -->
-            <div class="timeline-group mt-8" data-phase="phase2">
-                <div class="absolute -left-[11px] bg-indigo-100 text-indigo-800 text-[10px] font-black px-1.5 py-0.5 rounded border border-indigo-200 shadow-sm transform -translate-y-1">
-                    15:00
-                </div>
-                
-                <!-- Task 5: 15:00 - 16:00 -->
-                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="15:00" data-end="16:00">
-                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
-                    <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-5" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <span class="font-bold text-sm text-slate-800">全員抵達 M+ 搬運物資</span>
-                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">15:00</span>
-                            </div>
-                            <p class="text-xs text-slate-500 mt-1">接駁車抵達 M+，與大隊一起將物資車上的道具運送到「璞」。</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Task 6: 16:00 - 17:00 -->
-                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="16:00" data-end="17:00">
-                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
-                    <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-6" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <span class="font-bold text-sm text-slate-800">證婚位置 Set-up</span>
-                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">16:00 - 17:00</span>
-                            </div>
-                            <p class="text-xs text-slate-500 mt-1">聽從 <strong>Amy</strong> 指揮，與 Willson 共同將證婚區佈置（椅子、花藝）擺放到位。</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Task 7: 17:00 - 18:15 -->
-                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="17:00" data-end="18:15">
-                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
-                    <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-7" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <span class="font-bold text-sm text-slate-800">Reception Standby</span>
-                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">17:00</span>
-                            </div>
-                            <p class="text-xs text-slate-500 mt-1">進入接待處工作崗位，準備迎接證婚來賓。</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Task 8: 18:15 - 18:45 -->
-                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-amber-200 transition-all relative overflow-hidden" data-start="18:15" data-end="18:45">
-                    <div class="absolute top-0 left-0 w-1 h-full bg-amber-400"></div>
-                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
-                    <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-8" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <span class="font-bold text-sm text-amber-900">搬運布藝 Backdrop</span>
-                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">18:15 - 18:30</span>
-                            </div>
-                            <p class="text-xs text-slate-600 mt-1">證婚禮成後，與 Willson 將極巨大嘅布藝 Backdrop 搬往迎賓位置並調整。</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="flex-1 min-w-0">
+                <p id="profile-name"  class="font-display font-semibold italic text-base text-slate-800 leading-tight">-</p>
+                <p id="profile-title" class="text-[10px] text-slate-500 font-medium leading-snug mt-0.5 truncate">-</p>
             </div>
-
-            <!-- ================= PHASE 3 ================= -->
-            <div class="timeline-group mt-8" data-phase="phase3">
-                <div class="absolute -left-[11px] bg-indigo-100 text-indigo-800 text-[10px] font-black px-1.5 py-0.5 rounded border border-indigo-200 shadow-sm transform -translate-y-1">
-                    18:45
-                </div>
-                
-                <!-- Task 9: 18:45 - 19:15 -->
-                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="18:45" data-end="19:15">
-                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
-                    <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-9" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <span class="font-bold text-sm text-slate-800">晚宴迎賓 Reception</span>
-                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">18:45 - 19:30</span>
-                            </div>
-                            <p class="text-xs text-slate-500 mt-1">在接待處當值，引導晚宴賓客。</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Task 10: 19:15 - 19:30 -->
-                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="19:15" data-end="19:30">
-                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
-                    <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-10" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <span class="font-bold text-sm text-slate-800">支援女家簽到</span>
-                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">19:15</span>
-                            </div>
-                            <p class="text-xs text-slate-500 mt-1">視乎情況，彈性支援女家簽到並引導座位。</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Task 11: 19:30 - 20:30 -->
-                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="19:30" data-end="20:30">
-                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
-                    <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-11" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <span class="font-bold text-sm text-slate-800">維持接待處運作</span>
-                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">19:30 - 20:30</span>
-                            </div>
-                            <p class="text-xs text-slate-500 mt-1">維持 Reception 直到首道菜上桌。</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Task 12: 20:30 - 21:30 -->
-                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="20:30" data-end="21:30">
-                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
-                    <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-12" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <span class="font-bold text-sm text-slate-800">入口物資執拾、鎖入新娘房</span>
-                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">20:30</span>
-                            </div>
-                            <p class="text-xs text-slate-500 mt-1">與春雨一同將入口接待物資安全收拾，搬進新娘房並鎖好。</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Task 13: 21:30 - 22:40 -->
-                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="21:30" data-end="22:40">
-                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
-                    <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-13" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <span class="font-bold text-sm text-slate-800">敬酒環節 Standby</span>
-                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">21:30</span>
-                            </div>
-                            <p class="text-xs text-slate-500 mt-1">入席食飯之餘，敬酒前準時到位 Standby，應付臨時後勤。</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Task 14: 22:40 - 22:45 -->
-                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="22:40" data-end="22:45">
-                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
-                    <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-14" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <span class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-bus text-indigo-500"></i>
-                                    終極交通：Shuttle Ready
-                                </span>
-                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">22:40</span>
-                            </div>
-                            <p class="text-xs text-slate-500 mt-1">聯絡確認離場接駁車已就位。</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Task 15 & 16 (Combined as simultaneous high-risk block): 22:45 - 23:15 -->
-                <div class="task-card mt-3 bg-rose-50 rounded-xl p-3.5 shadow-sm border border-rose-200 transition-all relative overflow-hidden" data-start="22:45" data-end="23:15">
-                    <div class="absolute top-0 left-0 w-1 h-full bg-rose-500"></div>
-                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
-                    <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-15-16" class="local-cb mt-1 w-4 h-4 rounded text-rose-600 border-slate-300">
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <span class="font-bold text-sm text-rose-900">分流送客 & 監管鏈A</span>
-                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-100 text-rose-800">22:45</span>
-                            </div>
-                            <p class="text-xs text-rose-700 mt-1 font-medium">1. 引導賓客前往接駁車。<br>2. 與春雨、丁共同保管劉媽媽人情袋與金器，親手移交至劉媽媽手上。</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Task 17: 23:15 - 23:30 -->
-                <div class="task-card mt-3 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 transition-all relative" data-start="23:15" data-end="23:30">
-                    <div class="absolute -left-6 top-4 w-4 h-0.5 bg-indigo-100"></div>
-                    <div class="flex items-start gap-3">
-                        <input type="checkbox" id="task-17" class="local-cb mt-1 w-4 h-4 rounded text-indigo-600 border-slate-300">
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <span class="font-bold text-sm text-slate-800">終極撤退：物資上花車</span>
-                                <span class="time-badge text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">23:15</span>
-                            </div>
-                            <p class="text-xs text-slate-500 mt-1">協助將現場剩餘自攜物資搬運上花車。收工！</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+            <div id="profile-badge" class="text-[10px] font-black px-2.5 py-0.5 rounded-full border shrink-0">-</div>
         </div>
+
+        <!-- Timeline -->
+        <div id="timeline-container" class="relative pl-5 space-y-4 border-l-2 border-amber-100 ml-2"></div>
+
+        <!-- Safety Notes -->
+        <div class="rounded-2xl overflow-hidden shadow-sm border border-orange-200 mt-6">
+            <div class="bg-orange-50 px-4 py-2 border-b border-orange-200 flex items-center gap-2">
+                <i class="fa-solid fa-gem text-orange-500 text-xs"></i>
+                <h3 class="font-bold text-xs uppercase tracking-widest text-orange-700">姊妹團核心監管安全提示</h3>
+            </div>
+            <div class="bg-white p-4 space-y-3">
+                <div class="flex items-start gap-2.5">
+                    <span class="text-orange-400 text-xs mt-0.5 shrink-0">💍</span>
+                    <p class="text-[11px] text-slate-600 leading-relaxed">
+                        <strong class="text-slate-700">監管鏈 A（女家金器與人情）：</strong>
+                        由 <strong>Joanne</strong> 負責保管及輔助佩戴。晚宴後親自將金器與人情袋移交給譚媽媽。
+                    </p>
+                </div>
+                <div class="flex items-start gap-2.5">
+                    <span class="text-amber-500 text-xs mt-0.5 shrink-0">🪪</span>
+                    <p class="text-[11px] text-slate-600 leading-relaxed">
+                        <strong class="text-slate-700">監管鏈 C（身份證核對）：</strong>
+                        由總指揮 <strong>Amy</strong> 於 16:00-17:00 統一收集新人及雙方父親身份證，供律師核對後立刻歸還。
+                    </p>
+                </div>
+            </div>
+        </div>
+
     </main>
 
-    <!-- UI Interaction and Real-time Time Logic -->
     <script>
-        const WEDDING_DATE_STRING = "2026-05-24";
-        const START_TIME = new Date(`${WEDDING_DATE_STRING}T11:00:00+08:00`).getTime();
-        const END_TIME = new Date(`${WEDDING_DATE_STRING}T23:30:00+08:00`).getTime();
+    const CREW_DATA = {
+        amy: {
+            name:"Amy", role:"總指揮", title:"全局控時、決策監督與場地總指揮", color:"amber", icon:"fa-sitemap",
+            timeline:[
+                {date:"2026-05-23",start:"21:00",end:"23:59",title:"前哨夜：作戰準備",desc:"抵達如心酒店 Standby。確保所有流程及物資準備妥當，早點休息迎接大日子！"},
+                {date:"2026-05-24",start:"06:45",end:"07:30",title:"出門房準備與個人化妝",desc:"與 Renee 使用 Card 1 進入出門房準備及化妝。",materials:"Card 1 房卡"},
+                {date:"2026-05-24",start:"07:30",end:"08:00",title:"姊妹團早餐時間",desc:"與姊妹團享用早餐，補充體力。"},
+                {date:"2026-05-24",start:"08:00",end:"08:30",title:"攝影團隊 Standby",desc:"帶領 Jason 及攝影團隊上出門房進行準備。"},
+                {date:"2026-05-24",start:"10:00",end:"10:30",title:"玩新郎遊戲",desc:"擔任主持，帶領姊妹團進行玩新郎遊戲環節。",materials:"遊戲物資"},
+                {date:"2026-05-24",start:"10:30",end:"10:45",title:"愛的宣言",desc:"主持愛的宣言環節。"},
+                {date:"2026-05-24",start:"10:45",end:"11:15",title:"監控敬茶與拍攝進度",desc:"監控敬茶及新人花絮拍攝的進度。"},
+                {date:"2026-05-24",start:"11:15",end:"11:30",title:"Final Checking",desc:"在新房清場後進行最後檢查，確保不遺留任何物資。"},
+                {date:"2026-05-24",start:"12:00",end:"13:00",title:"順風圍全局控時",desc:"於劉家團隊中負責輔助 AQ 及全局控時。"},
+                {date:"2026-05-24",start:"13:00",end:"14:10",title:"午餐與休息",desc:"午餐及短暫休息。"},
+                {date:"2026-05-24",start:"14:10",end:"14:15",title:"指示兄弟團搬運",desc:"指示兄弟團幫手將所有物資搬運至 27 座接駁車。"},
+                {date:"2026-05-24",start:"14:15",end:"15:00",title:"最後物資確認",desc:"於 27 座車上進行轉場前最後物資確認。"},
+                {date:"2026-05-24",start:"15:00",end:"16:00",title:"抵達 M+，運送物資",desc:"抵達 M+，全員協助運送物資，將私人物品放進新娘房。"},
+                {date:"2026-05-24",start:"16:00",end:"17:00",title:"指揮 Set-up & 【監管鏈 C】收取身份證",desc:"指揮證婚區與麻雀房佈置。與 MC/Joel/律師溝通。【最高機密】收取譚爸爸、劉爸爸及新人身份證供律師核對！",tag:"監管鏈 C",urgent:true,materials:"4位主角身份證"},
+                {date:"2026-05-24",start:"17:00",end:"17:30",title:"支援新娘",desc:"前往新娘房支援 Manessa 準備進場。"},
+                {date:"2026-05-24",start:"17:30",end:"18:15",title:"證婚儀式全局監控",desc:"於證婚儀式期間進行全局監控與協調。"},
+                {date:"2026-05-24",start:"18:15",end:"18:30",title:"監督場地轉場",desc:"監督場地職員將證婚區轉換為晚宴用途（加 6 圍），並將地花移至 LED 熒幕前。",tag:"現場指揮"},
+                {date:"2026-05-24",start:"18:30",end:"18:45",title:"晚宴流程最終確認",desc:"與 MC 及 Joel 進行最後的晚宴流程確認。"},
+                {date:"2026-05-24",start:"18:45",end:"20:00",title:"持續控時與花童熟習",desc:"持續控時，陪同花仔花女熟悉流程。"},
+                {date:"2026-05-24",start:"20:00",end:"20:30",title:"晚宴 March-in 控時",desc:"負責控制晚宴 March-in 儀式的節奏。"},
+                {date:"2026-05-24",start:"22:45",end:"23:05",title:"陪同辦理結帳",desc:"送客期間，陪同新郎 Adrian 辦理各項結帳（場地、MUA、攝影、Shuttle 等）。",tag:"行政任務",urgent:true,materials:"結帳單據、尾數資金"},
+                {date:"2026-05-24",start:"23:15",end:"23:30",title:"VIP 撤退帶領",desc:"負責駕車帶領譚爸爸、譚媽媽安全離場。"}
+            ]
+        },
+        aq: {
+            name:"AQ", role:"伴娘", title:"新娘貼身照顧與外影統籌", color:"orange", icon:"fa-wand-magic-sparkles",
+            timeline:[
+                {date:"2026-05-23",start:"21:00",end:"23:59",title:"前哨夜：作戰準備",desc:"整理明日貼身物資，早點休息迎接大日子！"},
+                {date:"2026-05-24",start:"06:00",end:"06:45",title:"出門房準備與個人化妝",desc:"與 Joanne 及化妝師使用 Card 2 進入出門房準備及化妝。"},
+                {date:"2026-05-24",start:"07:20",end:"07:30",title:"領取早餐與房卡交接",desc:"與 Joanne 領取早餐，帶譚媽媽及新郎上房，隨後將 Card 2 交給 Wing！",tag:"行政",materials:"早餐、Card 2 房卡"},
+                {date:"2026-05-24",start:"07:30",end:"08:30",title:"姊妹團早餐時間",desc:"與姊妹團享用早餐，補充體力。"},
+                {date:"2026-05-24",start:"08:30",end:"09:30",title:"拍攝合照與派發利是",desc:"與新娘及父母拍攝合照，期間幫忙派發利是。",materials:"準備派發的利是"},
+                {date:"2026-05-24",start:"09:00",end:"10:00",title:"行李搬運上花車",desc:"協助將個人行李搬運上花車。"},
+                {date:"2026-05-24",start:"10:00",end:"10:45",title:"玩新郎遊戲",desc:"參與玩新郎遊戲及愛的宣言環節。"},
+                {date:"2026-05-24",start:"10:45",end:"11:15",title:"敬茶環節奉茶",desc:"於酒店敬茶環節負責奉茶。"},
+                {date:"2026-05-24",start:"11:15",end:"11:30",title:"出門撐紅傘",desc:"新娘出門時負責撐紅傘，保護新娘。",tag:"傳統儀式",materials:"紅傘"},
+                {date:"2026-05-24",start:"12:00",end:"12:30",title:"劉家拜神與遞茶",desc:"於劉家拜神儀式負責遞茶與換杯。"},
+                {date:"2026-05-24",start:"12:30",end:"13:00",title:"順風圍斟茶支援",desc:"於劉家斟茶環節持續提供支援。"},
+                {date:"2026-05-24",start:"13:00",end:"14:15",title:"新娘換裝與午餐",desc:"貼身幫忙新娘換衫、換妝，並享用午餐。",materials:"新娘轉場衣物"},
+                {date:"2026-05-24",start:"14:15",end:"15:00",title:"乘坐花車前往 M+",desc:"與新人、化妝師及 Jason 乘坐花車出發前往 M+。"},
+                {date:"2026-05-24",start:"15:00",end:"15:05",title:"抵達 M+，運送物資",desc:"抵達 M+，協助將物資運送至新娘房。"},
+                {date:"2026-05-24",start:"15:05",end:"16:00",title:"西九文化區外影統籌",desc:"作為外影環節的主要統籌人員，協助外拍。"},
+                {date:"2026-05-24",start:"16:00",end:"16:45",title:"協助新娘換裝",desc:"場地 Set-up 期間幫忙新娘換上證婚禮服。",materials:"婚紗/晚裝"},
+                {date:"2026-05-24",start:"16:45",end:"17:00",title:"參加總彩排",desc:"參加總彩排。"},
+                {date:"2026-05-24",start:"17:00",end:"17:30",title:"花童進場指導",desc:"集合花仔花女並帶領他們熟習進場流程。"},
+                {date:"2026-05-24",start:"17:30",end:"18:15",title:"證婚儀式進場",desc:"持小花束與姊妹團一同美麗進場。",materials:"小花束"},
+                {date:"2026-05-24",start:"18:15",end:"18:45",title:"新娘換裝 & 通知媽媽換裝",desc:"陪同新娘換衫。完成後主動通知劉媽媽（18:30）及譚媽媽（18:45）換衫。"},
+                {date:"2026-05-24",start:"18:45",end:"19:30",title:"跟隨新娘迎賓",desc:"跟隨新娘迎賓，進行控時與提醒，並準備補斟茶環節。"},
+                {date:"2026-05-24",start:"19:30",end:"19:50",title:"新娘換妝及配件",desc:"陪同新娘換妝及配件。"},
+                {date:"2026-05-24",start:"19:50",end:"20:00",title:"分派 March-in 道具",desc:"集合花仔花女並分派 March-in 道具！",materials:"March-in 道具"},
+                {date:"2026-05-24",start:"20:00",end:"20:30",title:"晚宴 March-in",desc:"與姊妹團於入口走廊兩旁使用泡泡槍營造氣氛。",materials:"泡泡槍"},
+                {date:"2026-05-24",start:"20:30",end:"22:45",title:"貼身留意新娘需求",desc:"晚宴進行中，隨時留意並照顧新娘需求。"},
+                {date:"2026-05-24",start:"22:45",end:"23:15",title:"送客 & 執拾物資",desc:"送客開始，隨後與 Renee 負責執拾現場剩餘物資。"},
+                {date:"2026-05-24",start:"23:15",end:"23:30",title:"看管個人物品",desc:"全員離場，負責於現場看管 Ladies 的所有個人物品。"}
+            ]
+        },
+        joanne: {
+            name:"Joanne", role:"接待", title:"接待、金器管理(監管鏈A)", color:"amber", icon:"fa-clipboard-user",
+            timeline:[
+                {date:"2026-05-23",start:"21:00",end:"23:59",title:"前哨夜：作戰準備",desc:"確認明日接待與金器交接流程，早點休息迎接大日子！"},
+                {date:"2026-05-24",start:"06:00",end:"06:45",title:"出門房準備與個人化妝",desc:"與 AQ 及化妝師使用 Card 2 進入出門房準備及化妝。",materials:"Card 2 房卡"},
+                {date:"2026-05-24",start:"07:20",end:"07:30",title:"領取早餐與房卡交接",desc:"與 AQ 領取早餐，帶譚媽媽及新郎上房，隨後將 Card 2 交給 Wing。"},
+                {date:"2026-05-24",start:"07:30",end:"08:30",title:"姊妹團早餐時間",desc:"與姊妹團享用早餐，補充體力。"},
+                {date:"2026-05-24",start:"08:30",end:"10:00",title:"女家拍攝與玩新郎",desc:"參與女家拍攝、玩新郎遊戲及愛的宣言環節。"},
+                {date:"2026-05-24",start:"10:45",end:"11:15",title:"【女家金器】輔助佩戴",desc:"於酒店敬茶環節負責輔助新娘佩戴女家金器。",tag:"金器管理",urgent:true},
+                {date:"2026-05-24",start:"11:15",end:"11:30",title:"清場與出門撒米",desc:"與 Renee 使用垃圾袋執拾新人佈置物資。新娘出門時負責撒米。",materials:"垃圾袋、米"},
+                {date:"2026-05-24",start:"12:00",end:"13:00",title:"拜神輔助戴金器",desc:"於劉家拜神儀式負責輔助戴金器，並呼叫下一批親戚準備。"},
+                {date:"2026-05-24",start:"13:00",end:"14:05",title:"午餐與休息",desc:"於 Zone B 午餐與休息。"},
+                {date:"2026-05-24",start:"14:05",end:"14:15",title:"順風圍現場清理",desc:"隨姊妹團隊進行順風圍現場清理。"},
+                {date:"2026-05-24",start:"14:15",end:"15:00",title:"乘坐 27 座接駁車",desc:"乘坐 27 座接駁車前往 M+。"},
+                {date:"2026-05-24",start:"15:00",end:"16:00",title:"【金器入夾萬】",desc:"抵達 M+，全員協助運送物資，隨即與 Renee 將金器存入夾萬。",tag:"金器管理",urgent:true,materials:"女家金器"},
+                {date:"2026-05-24",start:"16:00",end:"16:45",title:"Reception Set-up & 收集道具",desc:"協助 Reception Set-up。於 16:45 前收集所有證婚道具（戒指、誓言卡、花籃等）。",materials:"戒指、誓言卡、花籃"},
+                {date:"2026-05-24",start:"16:45",end:"17:00",title:"參加總彩排",desc:"參加證婚總彩排。"},
+                {date:"2026-05-24",start:"17:00",end:"17:30",title:"Reception Standby",desc:"開始招呼來賓並處理簽到。"},
+                {date:"2026-05-24",start:"17:30",end:"18:15",title:"證婚儀式進場",desc:"持小花束與姊妹團一同進場。",materials:"小花束"},
+                {date:"2026-05-24",start:"18:15",end:"18:30",title:"準備 March-in 道具",desc:"與 Renee 執拾證婚工具，並準備晚宴 March-in 道具及禮物。"},
+                {date:"2026-05-24",start:"18:30",end:"19:15",title:"Reception Standby",desc:"繼續於 Reception Standby 招呼賓客。"},
+                {date:"2026-05-24",start:"19:15",end:"19:30",title:"斟茶房機動支援",desc:"暫離接待處，前往斟茶房提供支援。"},
+                {date:"2026-05-24",start:"19:30",end:"20:00",title:"回到 Reception Standby",desc:"回到 Reception 繼續維持運作。"},
+                {date:"2026-05-24",start:"20:00",end:"20:30",title:"晚宴 March-in 氣氛",desc:"與兄弟姊妹團於入口走廊兩旁使用泡泡槍營造氣氛。",materials:"泡泡槍"},
+                {date:"2026-05-24",start:"20:30",end:"20:45",title:"接待處清場入新娘房",desc:"與 Renee 將入口處物資整理並搬移至新娘房（接待處任務結束，可入席）。"},
+                {date:"2026-05-24",start:"20:45",end:"21:30",title:"補斟茶輔助戴金器",desc:"準備補斟茶環節，負責輔助戴金器。"},
+                {date:"2026-05-24",start:"21:30",end:"22:45",title:"敬酒環節 Standby",desc:"敬酒環節前在席邊 Ready 支援。"},
+                {date:"2026-05-24",start:"22:45",end:"23:15",title:"【監管鏈 A】女家金器移交譚媽媽",desc:"【最高機密】準備女家（譚媽媽）的人情袋與金器。送客後將財物親自移交予譚媽媽！",tag:"監管鏈 A",urgent:true,materials:"女家金器、人情袋"},
+                {date:"2026-05-24",start:"23:15",end:"23:30",title:"看管個人物品",desc:"全員離場，負責於現場看管 Ladies 的個人物品。"}
+            ]
+        },
+        renee: {
+            name:"Renee", role:"接待", title:"接待處與物資守護、影像記錄", color:"amber", icon:"fa-camera",
+            timeline:[
+                {date:"2026-05-23",start:"21:00",end:"23:59",title:"前哨夜：作戰準備",desc:"準備相機、簽到文具等物資，早點休息迎接大日子！"},
+                {date:"2026-05-24",start:"06:45",end:"07:30",title:"出門房準備與個人化妝",desc:"與 Amy 使用 Card 1 進入出門房準備及化妝。"},
+                {date:"2026-05-24",start:"07:30",end:"08:30",title:"姊妹團早餐時間",desc:"與姊妹團享用早餐，補充體力。"},
+                {date:"2026-05-24",start:"10:00",end:"10:45",title:"玩新郎遊戲",desc:"參與玩新郎遊戲及愛的宣言環節。"},
+                {date:"2026-05-24",start:"10:45",end:"11:15",title:"敬茶：影相記錄與 Mark 名",desc:"於酒店敬茶環節負責影相記錄並精確 Mark 名！",tag:"關鍵記錄",urgent:true},
+                {date:"2026-05-24",start:"11:15",end:"11:30",title:"清場任務",desc:"與 Joanne 使用垃圾袋執拾新人佈置物資（只清裝飾，不留失物）。",materials:"垃圾袋"},
+                {date:"2026-05-24",start:"12:00",end:"13:00",title:"拜神：影相記錄與 Mark 名",desc:"於劉家拜神及敬茶環節負責影相記錄與 Mark 名！",tag:"關鍵記錄",urgent:true},
+                {date:"2026-05-24",start:"13:00",end:"14:05",title:"午餐與休息",desc:"於 Zone B 午餐與休息。"},
+                {date:"2026-05-24",start:"14:05",end:"14:15",title:"順風圍現場清理",desc:"與 Joanne 負責順風圍現場清理。"},
+                {date:"2026-05-24",start:"14:15",end:"15:00",title:"乘坐 27 座接駁車",desc:"乘坐 27 座接駁車前往 M+。"},
+                {date:"2026-05-24",start:"15:00",end:"16:00",title:"【金器入夾萬】",desc:"抵達 M+，協助運送物資，並隨即與 Joanne 將金器存入夾萬。",tag:"金器安全",urgent:true},
+                {date:"2026-05-24",start:"16:00",end:"16:45",title:"Reception Set-up & 收集身份證",desc:"負責 Reception 佈置。並於 16:45 前輔助收集雙方父親及新人身份證！",materials:"座位表、簽到紙、文具、相簿"},
+                {date:"2026-05-24",start:"16:45",end:"17:00",title:"參加總彩排",desc:"參加證婚總彩排。"},
+                {date:"2026-05-24",start:"17:00",end:"17:30",title:"Reception Standby",desc:"開始正式招呼來賓。"},
+                {date:"2026-05-24",start:"17:30",end:"18:15",title:"證婚儀式進場",desc:"持小花束與姊妹團一同美麗進場。",materials:"小花束"},
+                {date:"2026-05-24",start:"18:15",end:"18:30",title:"準備 March-in 道具",desc:"與 Joanne 執拾證婚工具，準備晚宴 March-in 道具及禮物。"},
+                {date:"2026-05-24",start:"18:30",end:"18:45",title:"檢查斟茶房安排",desc:"檢查斟茶房的安排（確認金器 Label、茶具等無誤）。",materials:"金器 Label、茶具"},
+                {date:"2026-05-24",start:"18:45",end:"19:30",title:"準備補斟茶環節",desc:"準備晚宴後的補斟茶環節。"},
+                {date:"2026-05-24",start:"19:30",end:"20:00",title:"回到 Reception Standby",desc:"整理斟茶物資後，回到 Reception 繼續維持運作。"},
+                {date:"2026-05-24",start:"20:00",end:"20:30",title:"晚宴 March-in 氣氛",desc:"與兄弟姊妹團於入口走廊兩旁使用泡泡槍營造氣氛。",materials:"泡泡槍"},
+                {date:"2026-05-24",start:"20:30",end:"20:45",title:"接待處清場入新娘房",desc:"與 Joanne 將入口處物資整理並搬移至新娘房。"},
+                {date:"2026-05-24",start:"20:45",end:"21:30",title:"補斟茶：影相記錄與 Mark 名",desc:"於補斟茶環節負責影相記錄與精確 Mark 名！",tag:"關鍵記錄",urgent:true},
+                {date:"2026-05-24",start:"21:30",end:"22:45",title:"敬酒環節 Standby",desc:"敬酒環節前在席邊 Ready 支援。"},
+                {date:"2026-05-24",start:"22:45",end:"23:15",title:"【監管鏈 A】金器人情收集",desc:"與 AQ 執拾現場剩餘物資。與 Joanne 共同收集金器與人情袋，準備交予譚媽媽。",tag:"監管鏈 A",urgent:true,materials:"女家金器、人情袋"},
+                {date:"2026-05-24",start:"23:15",end:"23:30",title:"看管個人物品",desc:"全員準備離場，負責於現場看管 Ladies 的所有個人物品。"}
+            ]
+        },
+        jason: {
+            name:"Jason", role:"影音", title:"舞台創意、影音控管與音樂播放", color:"orange", icon:"fa-music",
+            timeline:[
+                {date:"2026-05-23",start:"21:00",end:"23:59",title:"前哨夜：作戰準備",desc:"確認 SDE 播放檔案、音樂歌單、器材等物資，早點休息迎接大日子！"},
+                {date:"2026-05-24",start:"08:00",end:"08:30",title:"上出門房 Standby",desc:"由姊妹帶領與攝影團隊上「出門房」Standby。"},
+                {date:"2026-05-24",start:"08:30",end:"10:00",title:"出門房接待支援",desc:"協助女家拍攝期間的相關接待與支援。"},
+                {date:"2026-05-24",start:"10:00",end:"10:45",title:"玩新郎遊戲",desc:"參與姊妹團玩新郎遊戲環節。"},
+                {date:"2026-05-24",start:"11:15",end:"11:30",title:"協助執拾房間物資",desc:"清場期間協助執拾房間物資。"},
+                {date:"2026-05-24",start:"12:00",end:"13:00",title:"拜神與敬茶支援",desc:"於劉家團隊中提供拜神與敬茶環節的支援。"},
+                {date:"2026-05-24",start:"13:00",end:"14:15",title:"【關鍵】帶走所有敬茶物資",desc:"負責檢查並帶走所有敬茶物資，晚宴補斟茶全靠你！",tag:"物資總管",urgent:true,materials:"茶具、紅棗蓮子等敬茶物資"},
+                {date:"2026-05-24",start:"14:15",end:"15:00",title:"前往 M+",desc:"與新人、AQ 及 MUAs 乘坐花車或 Shuttle 出發前往 M+。"},
+                {date:"2026-05-24",start:"15:00",end:"16:00",title:"抵達 M+，協助運送物資",desc:"抵達 M+，全員協助將物資運送到餐廳「璞」，將私人物品放進新娘房。"},
+                {date:"2026-05-24",start:"16:00",end:"17:00",title:"【技術重頭戲】AV 測試 & LED 設置",desc:"進行 AV Testing、Entrance TVs 設置。LED Wall Set-up 及背景音樂測試！",tag:"舞台控管",urgent:true},
+                {date:"2026-05-24",start:"17:00",end:"17:30",title:"現場音樂播放",desc:"Reception 啟動，正式負責現場音樂播放。"},
+                {date:"2026-05-24",start:"17:30",end:"18:15",title:"證婚流程音樂",desc:"證婚儀式期間，負責流程音樂播放。"},
+                {date:"2026-05-24",start:"18:15",end:"18:30",title:"轉場背景音樂",desc:"證婚後場地轉換，持續負責背景音樂播放。"},
+                {date:"2026-05-24",start:"18:30",end:"19:30",title:"Reception Standby 支援",desc:"於 Reception Standby，協助 Joanne 處理接待處事務。"},
+                {date:"2026-05-24",start:"19:30",end:"20:00",title:"晚宴燈光與影音確認",desc:"與場地溝通燈光安排，並確認晚宴影音播放順序。"},
+                {date:"2026-05-24",start:"20:00",end:"20:30",title:"晚宴 March-in 音樂",desc:"晚宴 March-in 開始，負責播放進場音樂！"},
+                {date:"2026-05-24",start:"20:30",end:"21:30",title:"【SDE 播放】",desc:"處理早拍晚播 (SDE) 的播放。需特別留意 LED 螢幕比例 (1664x1088 px)！",tag:"核心技術",urgent:true},
+                {date:"2026-05-24",start:"21:30",end:"22:45",title:"敬酒節慶音樂",desc:"敬酒環節，配合播放節慶音樂。"},
+                {date:"2026-05-24",start:"22:45",end:"23:15",title:"執拾物資 & 巡視現場失物",desc:"協助執拾物資，並巡視現場檢查是否有賓客遺留失物。"},
+                {date:"2026-05-24",start:"23:15",end:"23:30",title:"看管個人物品",desc:"準備離場，Ladies 負責於現場看管所有人的個人物品。"}
+            ]
+        }
+    };
+
+    const START_TIME = new Date("2026-05-23T21:00:00+08:00").getTime();
+    const END_TIME   = new Date("2026-05-24T23:30:00+08:00").getTime();
+
+    // Cream-Yellow / Amber Theme mapping
+    const CREW_COLORS = {
+        amber:  { active:"bg-amber-500 text-white border-amber-500",   inactive:"bg-white text-slate-600 border-slate-200 hover:bg-amber-50 hover:border-amber-200 hover:text-amber-600" },
+        orange: { active:"bg-orange-500 text-white border-orange-500", inactive:"bg-white text-slate-600 border-slate-200 hover:bg-orange-50 hover:border-orange-200 hover:text-orange-600" }
+    };
+    const PROFILE_COLORS = {
+        amber:  { badge:"bg-amber-50 text-amber-700 border-amber-200",   icon:"bg-amber-50 border-amber-100 text-amber-500",   card:"border-amber-100" },
+        orange: { badge:"bg-orange-50 text-orange-700 border-orange-200", icon:"bg-orange-50 border-orange-100 text-orange-500", card:"border-orange-100" }
+    };
+
+    let currentCrew = localStorage.getItem('sister_active_crew') || 'amy';
+    let debugTimeOffset = 0, isDebugMode = false;
+
+    const timeFormatter = new Intl.DateTimeFormat('en-US', {
+        timeZone:'Asia/Hong_Kong', hour12:false,
+        hour:'2-digit', minute:'2-digit', second:'2-digit'
+    });
+    const dateFormatter = new Intl.DateTimeFormat('zh-HK', {
+        timeZone:'Asia/Hong_Kong', month:'long', day:'numeric', weekday:'short'
+    });
+
+    function parseTaskTime(dateStr, timeStr) {
+        return new Date(`${dateStr}T${timeStr}:00+08:00`).getTime();
+    }
+
+    window.switchCrew = function(key) {
+        currentCrew = key;
+        localStorage.setItem('sister_active_crew', key);
+        const data = CREW_DATA[key];
+        const cc   = CREW_COLORS[data.color];
+        const pc   = PROFILE_COLORS[data.color];
+
+        document.querySelectorAll('.crew-btn').forEach(btn => {
+            const k = btn.id.replace('crew-','');
+            const c = CREW_COLORS[CREW_DATA[k].color];
+            btn.className = `crew-btn shrink-0 px-3.5 py-2 text-xs font-bold rounded-xl border snap-start transition-all ${c.inactive}`;
+        });
+        const ab = document.getElementById(`crew-${key}`);
+        if (ab) ab.className = `crew-btn shrink-0 px-3.5 py-2 text-xs font-bold rounded-xl border snap-start transition-all ${cc.active}`;
+
+        document.getElementById('profile-name').textContent  = data.name;
+        document.getElementById('profile-title').textContent = data.title;
+        const badge = document.getElementById('profile-badge');
+        badge.textContent = data.role;
+        badge.className   = `text-[10px] font-black px-2.5 py-0.5 rounded-full border shrink-0 ${pc.badge}`;
+        document.getElementById('profile-icon').className    = `fa-solid ${data.icon} text-sm`;
+        document.getElementById('profile-icon-wrap').className = `rounded-xl p-2.5 border shrink-0 ${pc.icon}`;
+        document.getElementById('crew-profile').className   = `bg-white rounded-2xl px-4 py-3 border shadow-sm flex items-center gap-3 ${pc.card}`;
+
+        renderTimeline();
+        tick();
+    };
+
+    function renderTimeline() {
+        const container = document.getElementById('timeline-container');
+        container.innerHTML = '';
+        const data = CREW_DATA[currentCrew];
+        let lastDate = '';
+
+        data.timeline.forEach((task, idx) => {
+            if (task.date !== lastDate) {
+                const label = task.date === '2026-05-23'
+                    ? '🌙 5月23日 · 星期六 · 前哨夜'
+                    : '💍 5月24日 · 星期日 · 大婚正日';
+                container.insertAdjacentHTML('beforeend', `
+                    <div class="day-divider py-1 ${idx===0?'':'mt-2'}">
+                        <span class="font-display italic text-[11px] font-bold text-amber-500 whitespace-nowrap tracking-wide">${label}</span>
+                    </div>`);
+                lastDate = task.date;
+            }
+
+            const tagEl = task.tag
+                ? `<span class="text-[10px] bg-amber-50 text-amber-600 px-2 py-0.5 rounded-full font-semibold border border-amber-100 leading-none">${task.tag}</span>`
+                : '';
+            const urgentEl = task.urgent
+                ? `<span class="text-[10px] bg-orange-50 text-orange-600 px-2 py-0.5 rounded-full font-bold border border-orange-200 leading-none">⚡ 關鍵</span>`
+                : '';
+            const matEl = task.materials
+                ? `<div class="mt-2 bg-orange-50 border border-orange-100 rounded-lg px-2.5 py-1.5 flex items-start gap-1.5">
+                       <i class="fa-solid fa-briefcase text-orange-500 text-[9px] mt-0.5 shrink-0"></i>
+                       <span class="text-[10px] text-orange-700 font-semibold leading-snug">備料：${task.materials}</span>
+                   </div>`
+                : '';
+
+            const timeRange = `${task.start} – ${task.end}`;
+            const urgentCard = task.urgent ? 'task-urgent' : '';
+
+            container.insertAdjacentHTML('beforeend', `
+                <div class="task-card bg-white rounded-xl p-3.5 shadow-sm border border-slate-100 ${urgentCard} relative"
+                     data-date="${task.date}" data-start="${task.start}" data-end="${task.end}" id="task-idx-${idx}">
+                    <div class="absolute -left-[1.45rem] top-4 w-3 h-px bg-amber-200"></div>
+                    <div class="flex items-start gap-2">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex justify-between items-start gap-2 flex-wrap">
+                                <span class="task-title font-bold text-sm text-slate-800 leading-snug">${task.title}</span>
+                                <span class="time-badge shrink-0 text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-500 transition-colors tabular-nums">${timeRange}</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1 leading-relaxed">${task.desc}</p>
+                            ${(tagEl||urgentEl) ? `<div class="mt-2 flex flex-wrap gap-1">${tagEl}${urgentEl}</div>` : ''}
+                            ${matEl}
+                        </div>
+                    </div>
+                </div>`);
+        });
+    }
+
+    function tick() {
+        const now = Date.now() + debugTimeOffset;
+        const nowDate = new Date(now);
+
+        if (isDebugMode) {
+            document.getElementById('live-clock').innerHTML = `<span style="color:#f59e0b">${timeFormatter.format(nowDate)}</span>`;
+            document.getElementById('clock-label').textContent = `模擬時間 · ${dateFormatter.format(nowDate)}`;
+        } else {
+            document.getElementById('live-clock').textContent = timeFormatter.format(nowDate);
+            document.getElementById('clock-label').textContent = `當前香港時間 · ${dateFormatter.format(nowDate)}`;
+        }
+
+        let pct = 0;
+        if (now >= END_TIME) pct = 100;
+        else if (now > START_TIME) pct = ((now - START_TIME) / (END_TIME - START_TIME)) * 100;
+        document.getElementById('progress-percentage').textContent = `${Math.floor(pct)}%`;
+        document.getElementById('time-progress-bar').style.width = `${pct}%`;
+
+        let activeFound = false, activeName = '';
+        const data = CREW_DATA[currentCrew];
+        const isOrange = data.color === 'orange';
+        const bgActiveColor = isOrange ? 'bg-orange-500' : 'bg-amber-500';
         
-        let debugTimeOffset = 0;
-        let isDebugMode = false;
-        
-        // Formatter for HKT display
-        const timeFormatter = new Intl.DateTimeFormat('en-US', {
-            timeZone: 'Asia/Hong_Kong',
-            hour12: false,
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
+        document.querySelectorAll('.task-card').forEach(card => {
+            const start    = parseTaskTime(card.dataset.date, card.dataset.start);
+            const end      = parseTaskTime(card.dataset.date, card.dataset.end);
+            const isUrgent = card.classList.contains('task-urgent');
+            const badge    = card.querySelector('.time-badge');
+
+            card.classList.remove('task-active');
+            badge.classList.remove('bg-amber-500','bg-orange-500','text-white');
+            badge.classList.add('bg-slate-100','text-slate-500');
+
+            if (now >= start && now < end) {
+                card.classList.add('task-active');
+                badge.classList.remove('bg-slate-100','text-slate-500');
+                badge.classList.add(isUrgent ? 'bg-orange-500' : bgActiveColor, 'text-white');
+                activeFound = true;
+                activeName  = card.querySelector('.task-title').textContent;
+            }
         });
 
-        const dateFormatter = new Intl.DateTimeFormat('en-US', {
-            timeZone: 'Asia/Hong_Kong',
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit'
-        });
+        const dot = document.getElementById('active-dot');
+        const ping = document.getElementById('active-ping');
+        const status = document.getElementById('current-task-status');
 
-        // Initialize checkboxes with localStorage (offline persistence)
-        function initLocalCheckboxes() {
-            document.querySelectorAll('.local-cb').forEach(cb => {
-                const isChecked = localStorage.getItem(`brother_task_${cb.id}`) === 'true';
-                cb.checked = isChecked;
-                updateTaskVisuals(cb);
-
-                cb.addEventListener('change', (e) => {
-                    localStorage.setItem(`brother_task_${e.target.id}`, e.target.checked);
-                    updateTaskVisuals(e.target);
-                });
-            });
+        if (now < START_TIME) {
+            dot.className    = 'relative inline-flex rounded-full h-2.5 w-2.5 bg-slate-300';
+            ping.classList.add('hidden');
+            status.textContent = '等待大日子降臨...';
+            status.className   = 'text-[11px] font-bold text-slate-400 truncate text-right';
+        } else if (now >= END_TIME) {
+            dot.className    = 'relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500';
+            ping.classList.add('hidden');
+            status.textContent = '🎉 今日作戰順利，辛苦晒！';
+            status.className   = 'text-[11px] font-bold text-emerald-600 truncate text-right';
+        } else if (activeFound) {
+            dot.className    = `relative inline-flex rounded-full h-2.5 w-2.5 ${isOrange ? 'bg-orange-500' : 'bg-amber-500'}`;
+            ping.className   = `animate-ping absolute inline-flex h-full w-full rounded-full ${isOrange ? 'bg-orange-400' : 'bg-amber-400'} opacity-75`;
+            ping.classList.remove('hidden');
+            status.textContent = activeName;
+            status.className   = `text-[11px] font-black ${isOrange ? 'text-orange-600' : 'text-amber-600'} truncate text-right`;
+        } else {
+            dot.className    = 'relative inline-flex rounded-full h-2.5 w-2.5 bg-sky-400';
+            ping.classList.add('hidden');
+            status.textContent = '緩衝 / 待命中';
+            status.className   = 'text-[11px] font-bold text-sky-600 truncate text-right';
         }
+    }
 
-        function updateTaskVisuals(checkbox) {
-            const card = checkbox.closest('.task-card');
-            if (checkbox.checked) {
-                card.classList.add('opacity-40');
+    let clickCount = 0, clickTimer;
+    document.getElementById('app-title').addEventListener('click', () => {
+        clickCount++;
+        clearTimeout(clickTimer);
+        clickTimer = setTimeout(() => { clickCount = 0; }, 1000);
+        if (clickCount === 3) {
+            clickCount = 0;
+            const input = prompt('【姊妹團除錯模式】輸入模擬日期時間\n格式：MM-DD HH:MM（例：05-24 16:30）\n留空或取消即恢復真實時間：', '05-24 16:30');
+            if (input && input.includes(' ') && input.includes(':')) {
+                const [dp, tp] = input.split(' ');
+                debugTimeOffset = parseTaskTime(`2026-${dp}`, tp) - Date.now();
+                isDebugMode = true;
+                tick();
+                alert(`已模擬至 2026-${dp} ${tp} HKT`);
             } else {
-                card.classList.remove('opacity-40');
+                debugTimeOffset = 0; isDebugMode = false;
+                tick(); alert('已恢復真實時間。');
             }
         }
+    });
 
-        // Parse time attribute to timestamp
-        function parseTaskTime(timeString) {
-            return new Date(`${WEDDING_DATE_STRING}T${timeString}:00+08:00`).getTime();
-        }
-
-        // Real-time Engine
-        function tick() {
-            const realNow = new Date().getTime();
-            const now = realNow + debugTimeOffset;
-            
-            // 1. Update Live Digital Clock
-            const hkTimeString = timeFormatter.format(new Date(now));
-            const hkDateString = dateFormatter.format(new Date(now));
-            
-            const isWeddingDay = hkDateString === "05/24/2026";
-            
-            if (isDebugMode) {
-                document.getElementById('live-clock').innerHTML = `<span class="text-rose-500">${hkTimeString}</span>`;
-            } else {
-                document.getElementById('live-clock').innerText = hkTimeString;
-            }
-
-            // 2. Update Progress Bar
-            let percentage = 0;
-            if (now >= END_TIME) {
-                percentage = 100;
-            } else if (now > START_TIME && now < END_TIME) {
-                percentage = ((now - START_TIME) / (END_TIME - START_TIME)) * 100;
-            }
-            
-            document.getElementById('progress-percentage').innerText = `${Math.floor(percentage)}%`;
-            document.getElementById('time-progress-bar').style.width = `${percentage}%`;
-
-            // 3. Highlight Current Task
-            let activeTaskFound = false;
-            let currentTaskName = "";
-            const taskCards = document.querySelectorAll('.task-card');
-            
-            taskCards.forEach(card => {
-                const start = parseTaskTime(card.dataset.start);
-                const end = parseTaskTime(card.dataset.end);
-                const timeBadge = card.querySelector('.time-badge');
-
-                // Reset styles
-                card.classList.remove('task-active');
-                timeBadge.classList.remove('bg-indigo-500', 'text-white');
-                timeBadge.classList.add('bg-slate-100', 'text-slate-600');
-
-                if (isWeddingDay || isDebugMode) {
-                    if (now >= start && now < end) {
-                        // Task is active!
-                        card.classList.add('task-active');
-                        timeBadge.classList.remove('bg-slate-100', 'text-slate-600');
-                        timeBadge.classList.add('bg-indigo-500', 'text-white');
-                        activeTaskFound = true;
-                        currentTaskName = card.querySelector('.font-bold').innerText;
-                    }
-                }
-            });
-
-            // 4. Update Status UI
-            const activeDot = document.getElementById('active-dot');
-            const activePing = document.getElementById('active-ping');
-            const statusText = document.getElementById('current-task-status');
-
-            if (!isWeddingDay && !isDebugMode) {
-                activeDot.className = "relative inline-flex rounded-full h-3 w-3 bg-slate-300";
-                activePing.classList.add('hidden');
-                statusText.innerText = "等待大日子降臨...";
-                statusText.className = "text-xs font-bold text-slate-400";
-            } else if (now < START_TIME) {
-                activeDot.className = "relative inline-flex rounded-full h-3 w-3 bg-amber-400";
-                activePing.classList.add('hidden');
-                statusText.innerText = "準備出發";
-                statusText.className = "text-xs font-bold text-amber-600";
-            } else if (now >= END_TIME) {
-                activeDot.className = "relative inline-flex rounded-full h-3 w-3 bg-emerald-500";
-                activePing.classList.add('hidden');
-                statusText.innerText = "作戰圓滿結束！辛苦晒！";
-                statusText.className = "text-xs font-bold text-emerald-600";
-            } else if (activeTaskFound) {
-                activeDot.className = "relative inline-flex rounded-full h-3 w-3 bg-indigo-500";
-                activePing.classList.remove('hidden');
-                statusText.innerText = currentTaskName;
-                statusText.className = "text-xs font-bold text-indigo-600 truncate max-w-[150px] text-right";
-            } else {
-                // In between tasks or unmapped buffer times
-                activeDot.className = "relative inline-flex rounded-full h-3 w-3 bg-blue-400";
-                activePing.classList.add('hidden');
-                statusText.innerText = "緩衝 / 待命中";
-                statusText.className = "text-xs font-bold text-blue-600";
-            }
-        }
-
-        // Tab Filtering logic
-        window.filterPhase = function(phaseId) {
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('bg-indigo-600', 'text-white', 'active');
-                btn.classList.add('bg-white', 'text-slate-600');
-            });
-            const activeTab = document.getElementById(`tab-${phaseId}`);
-            activeTab.classList.remove('bg-white', 'text-slate-600');
-            activeTab.classList.add('bg-indigo-600', 'text-white', 'active');
-
-            document.querySelectorAll('.timeline-group').forEach(group => {
-                if (phaseId === 'all' || group.getAttribute('data-phase') === phaseId) {
-                    group.style.display = 'block';
-                } else {
-                    group.style.display = 'none';
-                }
-            });
-        };
-
-        // Hidden Debug Tool (Click title 3 times)
-        let clickCount = 0;
-        let clickTimer;
-        document.getElementById('app-title').addEventListener('click', () => {
-            clickCount++;
-            clearTimeout(clickTimer);
-            clickTimer = setTimeout(() => { clickCount = 0; }, 1000);
-            
-            if (clickCount === 3) {
-                clickCount = 0;
-                const simulateTime = prompt("【除錯模式】輸入你想模擬嘅婚禮時間 (例如 11:30, 18:15)\n取消可關閉除錯模式:", "11:15");
-                if (simulateTime && simulateTime.includes(':')) {
-                    const targetTimestamp = parseTaskTime(simulateTime);
-                    debugTimeOffset = targetTimestamp - new Date().getTime();
-                    isDebugMode = true;
-                    tick(); // Immediate update
-                    alert(`已將時間模擬至 ${simulateTime}`);
-                } else {
-                    debugTimeOffset = 0;
-                    isDebugMode = false;
-                    alert("除錯模式已關閉，恢復真實時間。");
-                }
-            }
-        });
-
-        // Bootstrap
-        window.addEventListener('DOMContentLoaded', () => {
-            initLocalCheckboxes();
-            tick(); // Initial call
-            setInterval(tick, 1000); // 1-second interval loop
-        });
+    window.addEventListener('DOMContentLoaded', () => {
+        switchCrew(currentCrew);
+        setInterval(tick, 1000);
+    });
     </script>
 </body>
 </html>
